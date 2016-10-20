@@ -50,19 +50,20 @@ public:
 
 class TStorageOra: public TStorage
 {
+public:
+    TStorageOra();
+
 protected:
     void closeTable();
 
 protected:
-    ~TStorageOra();
+    virtual ~TStorageOra();
 
     void openConnection(AnsiString Server, AnsiString Username, AnsiString Password);
     TOraSession* dbSession;
     TOraQuery* dbQuery;
     void truncateTable(TStorageTableOra* Table);
     void prepareQuery();
-
-
 };
 
 //---------------------------------------------------------------------------
@@ -73,7 +74,7 @@ protected:
 class TStorageOraProc: public TStorageOra
 {
 public:
-    TStorageOraProc() {};
+    //TStorageOraProc() {};
     void openTable(bool ReadOnly = true);
     //Variant Get(AnsiString Field);
     void setFieldValue(Variant Value);
@@ -99,7 +100,7 @@ private:
 class TStorageOraSql: public TStorageOra
 {
 public:
-    TStorageOraSql() {};
+    //TStorageOraSql() {};
     void openTable(bool ReadOnly = true);
     //Variant Get(AnsiString Field);      // Возвращает значение по имени поля
     Variant getFieldValue(TStorageField* Field);

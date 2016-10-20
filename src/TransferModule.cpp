@@ -64,6 +64,7 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
         return;
     }
 
+
    int DstRecordCountFirst = Dst->getRecordCount();
 
 
@@ -85,6 +86,7 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
             Src->nextTable();
             continue;
         }
+
 
         // Если источник открыт успешно
         log_n = Logger->WriteLog("Загружается > \"" + Src->getTable() + "\" (" + Src->getTableStage() + "; " + Src->getRecordStage()+")");
@@ -152,8 +154,9 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
             DstRecordCount = Dst->getRecordCount();
 
         } catch (Exception &e) {
-            if (e.Message != "")
+            if (e.Message != "") {
                 Logger->WriteLog("Непредвиденая ошибка. Источник: \"" + Src->getTable() + "\" (" + Src->getTableStage() + "), приемник \"" + Dst->getTable()+ "\". " + e.Message /*+ Dst->GetSrcField()*/);
+            }
         }
         Src->nextTable();
     }

@@ -20,10 +20,13 @@ TXmlLoader::TXmlLoader()
 //
 TXmlLoader::~TXmlLoader()
 {
-    if (SrcStor != NULL)
+    if (SrcStor != NULL) {
         delete SrcStor;
+    }
     if (DstStor != NULL)
+    {
         delete DstStor;
+    }
 }
 
 AnsiString TXmlLoader::ExpandFileNameCustom(AnsiString FileName, AnsiString FilePath)

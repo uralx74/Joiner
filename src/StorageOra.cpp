@@ -22,6 +22,14 @@
 //
 //---------------------------------------------------------------------------
 //
+
+TStorageOra::TStorageOra() :
+    dbSession(NULL),
+    dbQuery(NULL)
+{
+}
+
+
 void TStorageOra::openConnection(AnsiString Server, AnsiString Username, AnsiString Password)
 {
     try {
@@ -84,21 +92,24 @@ void TStorageOra::openConnection(AnsiString Server, AnsiString Username, AnsiStr
 //
 void TStorageOra::closeTable()
 {
+    if (Active) {
+        if (dbQuery->Active) {
+            dbQuery->Close();
+        }
+        dbSession->Close();
+    }
+
     if (dbQuery != NULL) {
-        Active = false;
-        dbQuery->Close();
         delete dbQuery;
         dbQuery = NULL;
     }
 
     if (dbSession != NULL) {
-        dbSession->Close();
         delete dbSession;
         dbSession = NULL;
     }
 
     TStorage::closeTable();
-    Active = false;
 }
 
 //---------------------------------------------------------------------------
@@ -270,10 +281,11 @@ void TStorageOraSql::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
 
-    if (Tables.size()>0)
+    if (Tables.size()>0) {
         openConnection(Tables[TableIndex].Server, Tables[TableIndex].Username, Tables[TableIndex].Password);
-    else
+    } else {
         throw Exception("Storage is not specified.");
+    }
 
     prepareQuery();
     if (ReadOnly == false) {

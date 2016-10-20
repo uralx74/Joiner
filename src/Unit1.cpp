@@ -126,8 +126,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
     Logger->AddConsole(LogRichEdit);    // Äîáàâëÿåì êîíñîëü, äëÿ âûâîäà ëîã-ñîîáùåíèé
 
     UpdateInterface();
-
-
+ 
     // Åñëè ïîëüçîâàòåëü çàïðîñèë ñôîðìèðîâàòü êîä äîñòóïà äëÿ âñòàâêè â êîíôèãóðàöèîííûé ôàéë
     int ScopeType = CommandLine->GetFlag("-ac", "-accesscode")? 0 : -1;
     ScopeType = ScopeType == -1 && CommandLine->GetFlag("-acp", "-accesscodepersonal")? 1 : ScopeType;
@@ -176,13 +175,14 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 
             OpenConfigButton->Enabled = true;
 
-// ÂÍÈÌÀÍÈÅ! ÝÒÎÒ ÊÎÄ ÄÎÁÀÂËÅÍ ÂÑÏÅØÊÅ. ÒÐÅÁÓÅÒÑß ÐÅÔÀÊÒÎÐÈÍÃ!!!!!!!!!!!!!!!
-    if (CommandLine->GetFlag("-ae", "-autoexit")) {
-        this->Close();
-    }
+            // ÂÍÈÌÀÍÈÅ! ÝÒÎÒ ÊÎÄ ÄÎÁÀÂËÅÍ ÂÑÏÅØÊÅ. ÒÐÅÁÓÅÒÑß ÐÅÔÀÊÒÎÐÈÍÃ!!!!!!!!!!!!!!!
+            if (CommandLine->GetFlag("-ae", "-autoexit"))
+            {
+                this->Close();
+            }
+            
             UpdateInterface();
         }
     }
 }
-//---------------------------------------------------------------------------
 

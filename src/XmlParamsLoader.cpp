@@ -101,7 +101,6 @@ bool __fastcall TXmlLoader::LoadParameters()
             if (sImportType == "dbase4") {
                 TStorageDbase* StorDbase = new TStorageDbase();
                 SrcStor = (TStorage*) StorDbase;
-
                 while (!subnode.IsEmpty()) {
                     if (msxml.GetNodeName(subnode) == "dbase4") {
                         TDbaseTable Table;
@@ -118,6 +117,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                     if (msxml.GetNodeName(subnode) == "orasql" || sImportType == "oratable") {
                         TOraSqlTable Table;
                         Table.Server = msxml.GetAttributeValue(subnode, "server");
+                        Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                        Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
 
                         // В дальнейшем переделать. 1. Командная строка приоритетней; 2. Шифрование-дешифрование
                         // Тоже самое в OraProc и в приемник
@@ -179,6 +180,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 TDbaseTable Table;
                 Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
+                Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 StorDbase->addTable(Table);
 
                 String xmlTemplate = msxml.GetAttributeValue(subnode, "template", "");
@@ -256,6 +259,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 Table.Procedure = msxml.GetAttributeValue(subnode, "procedure");
                 Table.Table = msxml.GetAttributeValue(subnode, "table");
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
+                Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 StorOraProc->addTable(Table);
 
 
@@ -309,6 +314,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 Table.Sql = ""; // Важно!
                 Table.Table = msxml.GetAttributeValue(subnode, "table");
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
+                Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 StorOraTable->addTable(Table);
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
@@ -333,6 +340,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 TExcelTable Table;
                 Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
+                Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 StorageExcel->addTable(Table);
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
@@ -360,6 +369,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 TSqlTextTable Table;
                 Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);
                 Table.Template = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "template"), clConfigPath);
+                Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
+                Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 //Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
                 StorageSqlText->addTable(Table);
 
@@ -373,8 +384,9 @@ bool __fastcall TXmlLoader::LoadParameters()
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
                             //field->format = msxml.GetAttributeValue(node_fields, "format", "");
                             field->name_src = LowerCase(msxml.GetAttributeValue(node_fields, "name_src", field->name));
-                            if (field->name_src == "" )
+                            if (field->name_src == "" ) {
                                 field->name_src = field->name;
+                            }
                         }
                     }
                     node_fields = msxml.GetNextNode(node_fields);
@@ -384,7 +396,7 @@ bool __fastcall TXmlLoader::LoadParameters()
         node = msxml.GetNextNode(node);
     }
 
-    Logger->WriteLog("Файл конфигурации загружен " + clConfig, LogLine);
+    Logger->WriteLog("Файл конфигурации загружен", LogLine);
     return true;
 
 }            

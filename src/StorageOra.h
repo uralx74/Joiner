@@ -24,7 +24,6 @@ public:
 };
 
 
-
 // Структура для хранения параметров
 class TOraProcTable : public TStorageTableOra
 {
@@ -40,9 +39,6 @@ public:
 };
 
 
-
-
-
 //---------------------------------------------------------------------------
 // class TStorageOra
 // base class for Oracle source/destination
@@ -55,8 +51,6 @@ public:
 
 protected:
     void closeTable();
-
-protected:
     virtual ~TStorageOra();
 
     void openConnection(AnsiString Server, AnsiString Username, AnsiString Password);
@@ -64,6 +58,9 @@ protected:
     TOraQuery* dbQuery;
     void truncateTable(TStorageTableOra* Table);
     void prepareQuery();
+
+
+
 };
 
 //---------------------------------------------------------------------------
@@ -74,16 +71,11 @@ protected:
 class TStorageOraProc: public TStorageOra
 {
 public:
-    //TStorageOraProc() {};
     void openTable(bool ReadOnly = true);
-    //Variant Get(AnsiString Field);
     void setFieldValue(Variant Value);
     void post();
     void nextField();
-    //AnsiString GetSrcField();
-    //bool IsActiveField();
     TOraField* addField();
-    //void AddField(const TOraField& Field);
     void addTable(const TOraProcTable& Table);
     AnsiString getTable();
 private:
@@ -110,14 +102,10 @@ public:
     void commit();
     void post();
     bool eor();     // End Of Records
-    //void nextTable();
     void nextRecord();
-    //AnsiString GetSrcField();
-    //bool IsActiveField();
     TOraField* addField();
     void addTable(const TOraSqlTable &Table);
     AnsiString getTable();
-    //bool FindField(AnsiString fieldName);
 
 private:
     std::vector<TOraSqlTable> Tables;    // Список полей для экспрта в файл DBF

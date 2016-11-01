@@ -3,9 +3,8 @@
 #define StorageH
 
 #include <vector>
+#include "Logger.h"
 
-
-//#include <typeinfo>
 
 class TStorage;  // опережающее объявление
 
@@ -15,6 +14,9 @@ class TStorage;  // опережающее объявление
 //---------------------------------------------------------------------------
 class TStorageField {
 public:
+    TStorageField();
+    virtual ~TStorageField() {};
+
     bool active;        // Признак необходимости заполненеия поля (если false, поле создается, но не заполняется)
     bool enable;        // Признак того, необходимо ли вообще учитывать это поле (если false, поле не создается)
     String name;    // Имя поля (до 10 символов).
@@ -24,13 +26,9 @@ public:
     bool required;      // Признак обязательности наличия сопоставленного поля в источнике
     bool linked;
 
-protected:
-    //int FieldType;
-    //virtual Copy(TStorageField *Field);
-    //GetName();
-    //GetLength();
-    //GetDecimals();
 };
+
+
 
 //---------------------------------------------------------------------------
 // Таблица
@@ -39,7 +37,10 @@ protected:
 class TStorageTable {
 public:
     TStorageTable();
+    virtual ~TStorageTable() {};
     bool Truncate;
+    int retry_count;
+    int retry_interval;
 };
 
 
@@ -54,11 +55,9 @@ public:
     friend TStorageField;
 
     TStorage();
-
     virtual ~TStorage() {};
 
     bool linkSource(TStorage* Storage);
-    //bool FindField(AnsiString fieldName);
     TStorageField* findField(AnsiString fieldName);
 
     virtual void openTable(bool ReadOnly = true) {};
@@ -84,7 +83,6 @@ public:
     bool isLinkedField();
     bool isActiveTable() { return Active; };
     bool isModified() { return Modified; };
-    //virtual void SetReadOnly(bool ReadOnlyFlag){ this->ReadOnly = ReadOnlyFlag; };
     virtual int getRecordCount(){ return RecordCount; };
     virtual int getRecordIndex(){ return RecordIndex; };
 
@@ -121,6 +119,9 @@ protected:
 
     TStorage* templateStorage;    // Шаблон (берется первая доступная таблица)
     bool delTemplateStorage;
+
+    TLogger* Logger; // добавлено 2016-10-25 для вывода в лог попыток соединения. не повторять.
+
 
 };
 

@@ -52,7 +52,7 @@ void TStorageOra::openConnection(AnsiString Server, AnsiString Username, AnsiStr
     } catch (Exception& e) {
         delete dbSession;
         dbSession = NULL;
-        throw Exception("Can't connect to server \"" + Server + "\". " + e.Message);
+        throw Exception("Can't connect to server \"" + Server + "\". " + Trim(e.Message) );
     }
 
 
@@ -281,14 +281,47 @@ void TStorageOraSql::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
 
-    if (Tables.size()>0) {
-        openConnection(Tables[TableIndex].Server, Tables[TableIndex].Username, Tables[TableIndex].Password);
-    } else {
+    if ( Tables.size() > 0 )
+    {
+        int retry_count = Tables[TableIndex].retry_count;
+        int retry_interval = Tables[TableIndex].retry_interval * 1000;
+        int retry_number = 1;
+        bool connected = false;
+        while ( !connected && ( retry_number <= retry_count || retry_count == -1 ) )
+        {
+            try {
+                if ( retry_count != 1 )
+                {
+                    Logger->WriteLog("Попытка соединения " + IntToStr(retry_number));
+                }
+                openConnection(Tables[TableIndex].Server, Tables[TableIndex].Username, Tables[TableIndex].Password);
+                connected = true;
+            }
+            catch(Exception &e)
+            {
+                retry_number++;
+                if (retry_number > retry_count && retry_count != -1)
+                {
+                    throw Exception(e);
+                }
+                else
+                {
+                    // Вывод в лог
+                    Logger->WriteLog(e.Message);
+                    Logger->WriteLog("Попытка соединения не удалась. Задержка " + IntToStr(retry_interval) + " сек." );
+                    Sleep(retry_interval);
+                }
+            }
+        }
+    }
+    else
+    {
         throw Exception("Storage is not specified.");
     }
 
     prepareQuery();
-    if (ReadOnly == false) {
+    if (ReadOnly == false)
+    {
         truncateTable(&Tables[TableIndex]);
     }
 
@@ -318,7 +351,6 @@ void TStorageOraSql::openTable(bool ReadOnly)
     } catch (...) {
         throw Exception("Can't to open query.");
     }
-
 
     // Возможно следует добавить флаг - признак назначения
     // источник или приемник.

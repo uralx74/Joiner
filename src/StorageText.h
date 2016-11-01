@@ -63,7 +63,7 @@ protected:
 public:
     TStorageSqlText(){};
     ~TStorageSqlText();
-    void open(bool ReadOnly = true);
+    void openTable(bool ReadOnly = true);
     //Variant GetFieldValue(TStorageField* Field) {};
     void setFieldValue(Variant Value);
     void commit();

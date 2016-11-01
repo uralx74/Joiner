@@ -24,7 +24,7 @@ TStorageSqlText::~TStorageSqlText()
 {
 }
 
-void TStorageSqlText::open(bool ReadOnly)
+void TStorageSqlText::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
    
@@ -95,10 +95,6 @@ void TStorageSqlText::commit()
         pStringList->Free();
         throw Exception("Can't commit.");
     }
-
-
-
-
 }
 
 //---------------------------------------------------------------------------

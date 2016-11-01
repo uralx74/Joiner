@@ -7,6 +7,12 @@
 #define NDEBUG
 
 
+
+TStorageField::TStorageField():
+    active(true)
+{
+}
+
 //---------------------------------------------------------------------------
 // Закрытие хранилища
 void TStorage::closeTable()
@@ -109,9 +115,12 @@ bool TStorage::isActiveField()
 
 
 //---------------------------------------------------------------------------
-TStorageTable::TStorageTable()
+TStorageTable::TStorageTable() :
+    Truncate(false),
+    retry_count(1),
+    retry_interval(10)
 {
-    Truncate = false;
+
 }
 
 //---------------------------------------------------------------------------
@@ -167,19 +176,21 @@ void TStorage::fullCopyFields(TStorage* src, TStorage* dst)
 // The interface class
 //---------------------------------------------------------------------------
 
-TStorage::TStorage()
+TStorage::TStorage() :
+    TableIndex(0),
+    TableCount(0),
+    FieldCount(0),
+    FieldIndex(0),
+    RecordCount(0),
+    RecordIndex(0),
+    Active(false),
+    ReadOnly(true),
+    Modified(false),
+    templateStorage(NULL),
+    delTemplateStorage(false)
+
 {
-    TableIndex = 0;
-    TableCount = 0;
-    FieldCount = 0;
-    FieldIndex = 0;
-    RecordCount = 0;
-    RecordIndex = 0;
-    Active = false;
-    ReadOnly = true;
-    Modified = false;
-    templateStorage = NULL;
-    delTemplateStorage = false;
+    Logger = &TLogger::getInstance();
 }
 
 //---------------------------------------------------------------------------

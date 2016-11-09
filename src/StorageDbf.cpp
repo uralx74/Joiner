@@ -4,22 +4,6 @@
 #include "StorageDbf.h"
 
 
-//---------------------------------------------------------------------------
-// ƒобавл€ет новое поле в список полей ()
-// возможно переделать на AddField(TDbaseField* Field)
-TStorageField* TStorageDbase::addField(TStorageField* Field)
-{
-    TStorageField* newField = new TDbaseField();
-
-    //String test2 = (static_cast<TDbaseField*>(newField))->type;
-
-    // Ќеобходимо? приведение типов чтобы скопировать обьект правильно
-    *(static_cast<TDbaseField*>(newField)) = *(static_cast<TDbaseField*>(Field));
-
-    this->Fields.push_back(newField);// возможно нужно приводить к  static_cast<TDbaseField*>
-    FieldCount++;
-    return newField;
-}
 
 //---------------------------------------------------------------------------
 void TStorageDbase::loadFieldDefs()
@@ -81,6 +65,22 @@ TStorageDbase::TStorageDbase(String fileName)
     this->addTable(table);
 }
 
+//---------------------------------------------------------------------------
+// ƒобавл€ет новое поле в список полей ()
+// возможно переделать на AddField(TDbaseField* Field)
+TStorageField* TStorageDbase::addField(TStorageField* Field)
+{
+    TStorageField* newField = new TDbaseField();
+
+    //String test2 = (static_cast<TDbaseField*>(newField))->type;
+
+    // Ќеобходимо? приведение типов чтобы скопировать обьект правильно
+    *(static_cast<TDbaseField*>(newField)) = *(static_cast<TDbaseField*>(Field));
+
+    this->Fields.push_back(newField);// возможно нужно приводить к  static_cast<TDbaseField*>
+    FieldCount++;
+    return newField;
+}
 
 //---------------------------------------------------------------------------
 // ƒобавл€ет новое поле в список полей
@@ -152,8 +152,8 @@ void TStorageDbase::openTable(bool ReadOnly)
         throw Exception("The table with index \"" + IntToStr(TableIndex) + "\" doesn't exists.");
     }
 
-    if (ReadOnly) {
-
+    if (ReadOnly)
+    {
         pTable = new TDbf(NULL);
 
         pTable->TableName = Tables[TableIndex].File;
@@ -163,6 +163,9 @@ void TStorageDbase::openTable(bool ReadOnly)
             try {
                 pTable->Open();
                 RecordCount = pTable->RecordCount;
+
+                loadFieldDefs(); // 2016-11-09
+
             } catch (...) {
                 throw Exception("Can't to open file  " + Tables[TableIndex].File + ".");
             }
@@ -197,8 +200,9 @@ void TStorageDbase::create()
     }
 
 
-        //  опирование полей из шаблона, если он задан
-    if (templateStorage) {
+    //  опирование полей из шаблона, если он задан
+    if (templateStorage)
+    {
         templateStorage->openTable();
         templateStorage->loadFieldDefs();
 

@@ -47,7 +47,6 @@ void TStorage::rollback()
     FieldIndex = 0;
 }
 
-
 //---------------------------------------------------------------------------
 // Проверка является ли поле ассоциированными с полем в источнике
 bool TStorage::isLinkedField()
@@ -73,10 +72,9 @@ bool TStorage::linkSource(TStorage* Storage)
 // Поиск поля по имени
 TStorageField* TStorage::findField(AnsiString fieldName)
 {
-//int tt = FieldCount;
     int n = Fields.size();
     for (int i = 0; i < n; i++) {
-        if (Fields[i]->name == fieldName) {
+        if (UpperCase(Fields[i]->name) == UpperCase(fieldName)) {
             return Fields[i];
         }
     }

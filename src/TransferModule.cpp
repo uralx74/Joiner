@@ -101,7 +101,8 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
             Dst->linkSource(Src);
 
             int DstRecordCount = Dst->getRecordCount();
-            while(!Src->eor()) {    // Цикл по строкам
+            while(!Src->eor())    // Цикл по строкам
+            {
                 //String sss = Src->getRecordStage();
                 //if (Src->GetRecordIndex() % 100 == 0) {
                     //Logger->WriteLog("Загружается > \"" + Src->GetTable() + "\" (" + Src->getTableStage() + "; " + Src->getRecordStage() + ")",log_n);
@@ -111,7 +112,8 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
 
                 Dst->append();
 
-                while(!Dst->eof()) {    // Цикл по столбцам в приемнике
+                while(!Dst->eof())     // Цикл по столбцам в приемнике
+                {
                     bool isLinkedField = Dst->isLinkedField();
                     bool isActiveField = Dst->isActiveField();
                     if (isLinkedField && isActiveField) {
@@ -169,19 +171,26 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
     int ss = TotalSec % 60;
     AnsiString sTotalTime = IntToStr(ss) + " сек";
     if (mm > 0)
+    {
         sTotalTime = IntToStr(mm) + " мин " + sTotalTime;
+    }
     if (hh > 0)
+    {
         sTotalTime = IntToStr(hh) + " час " + sTotalTime;
+    }
 
 
     int DstRecordCountTotal = Dst->getRecordCount() - DstRecordCountFirst;
 
     // Проверять, был ли хоть один Commit в приемнике
     // может быть использовать RecordIndex или RecordCount
-    if (Dst->isModified()) {
+    if (Dst->isModified())
+    {
         Logger->WriteLog("Всего загружено " + IntToStr(DstRecordCountTotal) + " записей за " + sTotalTime+ ".");
         Logger->WriteLog("Результат сохранен в \"" + Dst->getTable() + "\".");
-    } else {
+    }
+    else
+    {
         Logger->WriteLog("Приемник не был изменен. Всего затрачено времени на процесс: " + sTotalTime+ ".");
     }
 

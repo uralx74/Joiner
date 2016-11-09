@@ -2,7 +2,6 @@
 #pragma hdrstop
 //---------------------------------------------------------------------------
 
-
 #include "Unit1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -25,7 +24,8 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 // Формирует код доступа и отображает его пользователю (дописывает в лог-файл)
 void TForm1::ShowCode(int ScopeType)
 {
-    if (ScopeType > -1) {
+    if (ScopeType > -1)
+    {
         AnsiString clSrcUsername = CommandLine->GetValue("-srcuser","-su");
         AnsiString clSrcPassword = CommandLine->GetValue("-srcpassword","-sp");
         AnsiString clDstUsername = CommandLine->GetValue("-dstuser","-du");

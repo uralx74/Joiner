@@ -201,7 +201,7 @@ void TStorageOraProc::post()
 {
     dbQuery->ExecSQL();
     FieldIndex = 0;
-    RecordCount++;
+    //RecordCount++;  2016-11-09
     Modified = true;
 }
 

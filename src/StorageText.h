@@ -79,7 +79,7 @@ public:
     //void NextField();
     //void NextField();
 
-    TSqlTextField* addField();
+    virtual TSqlTextField* addField();
     void addTable(const TSqlTextTable& Table);
 
     AnsiString getTable();

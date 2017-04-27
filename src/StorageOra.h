@@ -75,7 +75,7 @@ public:
     void setFieldValue(Variant Value);
     void post();
     void nextField();
-    TOraField* addField();
+    virtual TOraField* addField();
     void addTable(const TOraProcTable& Table);
     AnsiString getTable();
 private:
@@ -103,7 +103,7 @@ public:
     void post();
     bool eor();     // End Of Records
     void nextRecord();
-    TOraField* addField();
+    virtual TOraField* addField();
     void addTable(const TOraSqlTable &Table);
     AnsiString getTable();
 

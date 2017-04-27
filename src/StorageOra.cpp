@@ -289,7 +289,8 @@ void TStorageOraSql::openTable(bool ReadOnly)
         bool connected = false;
         while ( !connected && ( retry_number <= retry_count || retry_count == -1 ) )
         {
-            try {
+            try
+            {
                 if ( retry_count != 1 )
                 {
                     Logger->WriteLog("Попытка соединения " + IntToStr(retry_number));
@@ -320,7 +321,7 @@ void TStorageOraSql::openTable(bool ReadOnly)
     }
 
     prepareQuery();
-    if (ReadOnly == false)
+    if (ReadOnly == false && Tables[TableIndex].Truncate)
     {
         truncateTable(&Tables[TableIndex]);
     }
@@ -329,7 +330,8 @@ void TStorageOraSql::openTable(bool ReadOnly)
     AnsiString SqlText;
 
     if (Sql != "") {
-        if (!FileExists(Sql)) {
+        if (!FileExists(Sql))
+        {
             throw Exception("File not found " + Sql + ".");
         }
         TStringList* pStringList;

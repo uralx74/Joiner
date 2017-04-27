@@ -5,7 +5,7 @@
 #include <vector>
 #include "Storage.h"
 
-#include "c:\PROGRS\current\util\MSExcelWorks.h"
+#include "MSExcelWorks.h"
 
 
 class TStorageExcel;
@@ -60,7 +60,7 @@ public:
     //void NextField();
 
 
-    TExcelField* addField();
+    virtual TExcelField* addField();
     void addTable(const TExcelTable& Table);
 
     AnsiString getTable();

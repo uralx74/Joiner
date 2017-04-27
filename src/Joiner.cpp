@@ -17,25 +17,7 @@
 #include "..\util\appver.h"
 #include "TransferModule.h"
 
-USEUNIT("pch.cpp");
-
-USERES("Joiner.res");
 USEFORM("Unit1.cpp", Form1);
-USEUNIT("..\util\MSExcelWorks.cpp");
-USEUNIT("..\util\OleXml.cpp");
-USEUNIT("..\util\CommandLine.cpp");
-USEUNIT("TransferModule.cpp");
-USEUNIT("Storage.cpp");
-USEUNIT("StorageOra.cpp");
-USEUNIT("StorageDbf.cpp");
-USEUNIT("StorageText.cpp");
-USEUNIT("StorageExcel.cpp");
-USEUNIT("Logger.cpp");
-USEUNIT("..\util\VigenereCipher.cpp");
-USEUNIT("..\util\TransposCipher.cpp");
-USEUNIT("Encoder.cpp");
-USEUNIT("TransferThread.cpp");
-USEUNIT("XmlParamsLoader.cpp");
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -55,7 +37,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
     Logger->WriteLog("---------------------------------------------------------------------------" );
-    Logger->WriteLog("Joiner " + AppFullVersion);
+    Logger->WriteLog("Joiner " + AppVer::FullVersion);
     Logger->WriteLog("AppFileName = " + Application->ExeName);
     //Logger->WriteLog("LogFileName = " + TLogger::GetLogFilename(sLogFileName));
     Logger->WriteLog("LogFileName = " + Logger->GetLogFilename(sLogFileName));
@@ -106,7 +88,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     // Выводим информацию об авторе, если требуется
     if (cl->GetFlag("-info","-i")) {
         MessageBoxInf(
-            "Программа для слияния файлов\nJoiner v." + AppVersion + " (" + AppBuild + ")"
+            "Программа для слияния файлов\nJoiner v." + AppVer::Version + " (" + AppVer::Build + ")"
             "\n"
             "\nCopyright © 2014-2016"
             "\n"
@@ -134,7 +116,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     {
         Application->Initialize();
         Application->CreateForm(__classid(TForm1), &Form1);
-        Application->Run();
+         Application->Run();
         Logger->WriteLog("Программа завершена.");
     }
     catch (Exception &exception)

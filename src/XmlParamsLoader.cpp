@@ -20,7 +20,8 @@ TXmlLoader::TXmlLoader()
 //
 TXmlLoader::~TXmlLoader()
 {
-    if (SrcStor != NULL) {
+    if (SrcStor != NULL)
+    {
         delete SrcStor;
     }
     if (DstStor != NULL)
@@ -32,9 +33,12 @@ TXmlLoader::~TXmlLoader()
 AnsiString TXmlLoader::ExpandFileNameCustom(AnsiString FileName, AnsiString FilePath)
 {
     AnsiString result = ExpandFileName(FileName);
-    if (UpperCase(result) != UpperCase(Trim(FileName))) {
+    if (UpperCase(result) != UpperCase(Trim(FileName)))
+    {
         result = ExtractFilePath(FilePath) + Trim(FileName);
-    } else {
+    }
+    else
+    {
         result = FileName;
     }
     return result;
@@ -74,7 +78,8 @@ bool __fastcall TXmlLoader::LoadParameters()
 
     int LogLine = Logger->WriteLog("Загрузка файла конфигурации > " + clConfig);
 
-    if (!FileExists(clConfig)) {
+    if (!FileExists(clConfig))
+    {
         Logger->WriteLog("Ошибка. Файл конфигурации не найден " + clConfig);
         return false;
     }
@@ -83,7 +88,8 @@ bool __fastcall TXmlLoader::LoadParameters()
     OleXml msxml;
     msxml.LoadXMLFile(clConfig);
 
-    if (msxml.GetParseError() != "") {
+    if (msxml.GetParseError() != "")
+    {
         Logger->WriteLog("Ошибка: " + msxml.GetParseError());
         return false;
     }
@@ -91,30 +97,38 @@ bool __fastcall TXmlLoader::LoadParameters()
     Variant RootNode = msxml.GetRootNode();
     Variant node = msxml.GetFirstNode(RootNode);
 
-    while (!node.IsEmpty())
+    while ( !VarIsClear(node))
     {
         String sNodeName = msxml.GetNodeName(node);
-        if (sNodeName == "import")  {
+        if (sNodeName == "import")
+        {
             Variant subnode = msxml.GetFirstNode(node);
             AnsiString sImportType = msxml.GetNodeName(subnode);
 
-            if (sImportType == "dbase4") {
+            if (sImportType == "dbase4")
+            {
                 TStorageDbase* StorDbase = new TStorageDbase();
                 SrcStor = (TStorage*) StorDbase;
-                while (!subnode.IsEmpty()) {
-                    if (msxml.GetNodeName(subnode) == "dbase4") {
+                while ( !VarIsClear(subnode))
+                {
+                    if (msxml.GetNodeName(subnode) == "dbase4")
+                    {
                         TDbaseTable Table;
                         Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Имя файла может быть задано маской
                         StorDbase->addTable(Table);
                     }
                     subnode = msxml.GetNextNode(subnode);
                 }
-            } else if (sImportType == "orasql" || sImportType == "oratable") {
+            }
+            else if (sImportType == "orasql" || sImportType == "oratable")
+            {
                 TStorageOraSql* StorOraSql = new TStorageOraSql();
                 SrcStor = (TStorage*) StorOraSql;
 
-                while (!subnode.IsEmpty()) {
-                    if (msxml.GetNodeName(subnode) == "orasql" || sImportType == "oratable") {
+                while ( !VarIsClear(subnode) )
+                {
+                    if (msxml.GetNodeName(subnode) == "orasql" || sImportType == "oratable")
+                    {
                         TOraSqlTable Table;
                         Table.Server = msxml.GetAttributeValue(subnode, "server");
                         Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
@@ -124,27 +138,37 @@ bool __fastcall TXmlLoader::LoadParameters()
                         // Тоже самое в OraProc и в приемник
 
                         // Если задано имя пользователя и пароль в командной строке
-                        if (clSrcUsername != "" || clSrcPassword != "") {
+                        if (clSrcUsername != "" || clSrcPassword != "")
+                        {
                             Table.Username = clSrcUsername;
                             Table.Password = clSrcPassword;
-                        } else {
+                        }
+                        else
+                        {
                             AnsiString code = msxml.GetAttributeValue(subnode, "code");
-                            if (code != "") {
+                            if (code != "")
+                            {
                                 TEncoder encoder;
-                                try {
+                                try
+                                {
                                     encoder.Decode(code, Table.Username, Table.Password );
-                                } catch (...) {
+                                }
+                                catch (...)
+                                {
                                     Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
                                     return false;
                                 }
-                            } else {    // Если задано не зашифрованное значение
+                            }
+                            else
+                            {    // Если задано не зашифрованное значение
                                 Table.Username = msxml.GetAttributeValue(subnode, "username");
                                 Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                             }
                         }
 
 
-                        if (sImportType == "orasql") {
+                        if (sImportType == "orasql")
+                        {
                             //Table.Sql = ExpandFileName(msxml.GetAttributeValue(subnode, "sql"));
                             Table.Sql = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "sql"), clConfigPath);
 
@@ -154,12 +178,16 @@ bool __fastcall TXmlLoader::LoadParameters()
                     }
                     subnode = msxml.GetNextNode(subnode);
                 }
-            } else if (sImportType == "excel") {
+            }
+            else if (sImportType == "excel")
+            {
                 TStorageExcel* StorageExcel = new TStorageExcel();
                 SrcStor = (TStorage*) StorageExcel;
 
-                while (!subnode.IsEmpty()) {
-                    if (msxml.GetNodeName(subnode) == "excel") {
+                while ( !VarIsClear(subnode))
+                {
+                    if (msxml.GetNodeName(subnode) == "excel")
+                    {
                         TExcelTable Table;
                         Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Имя файла может быть задано маской
                         StorageExcel->addTable(Table);
@@ -167,11 +195,14 @@ bool __fastcall TXmlLoader::LoadParameters()
                     subnode = msxml.GetNextNode(subnode);
                 }
             }
-        } else if (sNodeName == "export") {
+        }
+        else if (sNodeName == "export")
+        {
 
             Variant subnode = msxml.GetFirstNode(node);
             AnsiString sExportType = msxml.GetNodeName(subnode);
-            if (sExportType == "dbase4") {
+            if (sExportType == "dbase4")
+            {
 
                 TStorageDbase* StorDbase = new TStorageDbase();
                 DstStor = (TStorage*) StorDbase;
@@ -184,36 +215,47 @@ bool __fastcall TXmlLoader::LoadParameters()
                 Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
                 StorDbase->addTable(Table);
 
-                String xmlTemplate = msxml.GetAttributeValue(subnode, "template", "");
+                String xmlTemplate = msxml.GetAttributeValue(subnode, "template", String(""));
                 bool xmlSourceAsTemplate = msxml.GetAttributeValue(subnode, "source_as_template", false);
 
                 //StorDbase->AddTemplate(xmlTemplate);
 
-                if (xmlTemplate != "") {    // Если задан путь к шаблону
-                    try {
+                if (xmlTemplate != "")
+                {    // Если задан путь к шаблону
+                    try
+                    {
                         StorDbase->setTemplate(new TStorageDbase(ExpandFileNameCustom(xmlTemplate, clConfigPath)), true);
-                    } catch (Exception &e) {
+                    }
+                    catch (Exception &e)
+                    {
                         Logger->WriteLog("Ошибка. Не удалось загрузить шаблон из файла " + xmlTemplate + ".");
                         throw Exception("");
                     }
-                } else if (xmlSourceAsTemplate) {
+                }
+                else if (xmlSourceAsTemplate)
+                {
                     // нужно ли закрывать после использования?
                     // как получить список полей не меняя положение указателя на запись, таблицу, источник?
                     StorDbase->setTemplate(SrcStor);
 
-                } else {
+                }
+                else
+                {
 
                     // Здесь возможно тоже создавать TStorage и добавлять в него поля ?
                     Variant node_fields = msxml.GetFirstNode(subnode);
 
-                    while (!node_fields.IsEmpty()) {
-                        if (msxml.GetNodeName(node_fields) == "field") {
+                    while ( !VarIsClear(node_fields))
+                    {
+                        if (msxml.GetNodeName(node_fields) == "field")
+                        {
                             // Возможно переделать на абстрактную фабрику или др.
                             // а также позаботиться об удалении обьекта
                             TDbaseField* dbaseField = StorDbase->addField();
-                            if (dbaseField != NULL) {
+                            if (dbaseField != NULL)
+                            {
                                 // Создать функцию для установки значений
-                                dbaseField->type = LowerCase(msxml.GetAttributeValue(node_fields, "type", "C"))[1];
+                                dbaseField->type = LowerCase(msxml.GetAttributeValue(node_fields, "type", String("C")))[1];
                                 dbaseField->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                                 dbaseField->length = msxml.GetAttributeValue(node_fields, "length", 0);
                                 dbaseField->decimals = msxml.GetAttributeValue(node_fields, "decimals", 0);
@@ -228,7 +270,9 @@ bool __fastcall TXmlLoader::LoadParameters()
                     }
                 }
 
-           } else if (sExportType == "oraproc") {   //
+           }
+           else if (sExportType == "oraproc")
+           {   //
                 TStorageOraProc* StorOraProc = new TStorageOraProc();
                 DstStor = (TStorage*) StorOraProc;
 
@@ -237,20 +281,29 @@ bool __fastcall TXmlLoader::LoadParameters()
 
                 //!!! Фрагмент дублируется - необходим рефакторинг!
                 // Если задано имя пользователя и пароль в командной строке
-                if (clSrcUsername != "" || clSrcPassword != "") {
+                if (clSrcUsername != "" || clSrcPassword != "")
+                {
                     Table.Username = clSrcUsername;
                     Table.Password = clSrcPassword;
-                } else {
+                }
+                else
+                {
                     AnsiString code = msxml.GetAttributeValue(subnode, "code");
-                    if (code != "") {
+                    if (code != "")
+                    {
                         TEncoder encoder;
-                        try {
+                        try
+                        {
                             encoder.Decode(code, Table.Username, Table.Password );
-                        } catch (...) {
+                        }
+                        catch (...)
+                        {
                             Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
                             return false;
                         }
-                    } else {    // Если задано не зашифрованное значение
+                    }
+                    else
+                    {    // Если задано не зашифрованное значение
                         Table.Username = msxml.GetAttributeValue(subnode, "username");
                         Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                     }
@@ -265,11 +318,14 @@ bool __fastcall TXmlLoader::LoadParameters()
 
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
-                while (!node_fields.IsEmpty()) {
-                    if (msxml.GetNodeName(node_fields) == "field") {
+                while ( !VarIsClear(node_fields))
+                {
+                    if (msxml.GetNodeName(node_fields) == "field")
+                    {
                         TOraField* field = StorOraProc->addField();   // AddField
 
-                        if (field != NULL) {
+                        if (field != NULL)
+                        {
                             field->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
@@ -281,7 +337,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                     node_fields = msxml.GetNextNode(node_fields);
                 }
 
-            } else if (sExportType == "oratable") {   // Приемник - Таблица в БД Oracle
+            } else if (sExportType == "oratable")
+            {   // Приемник - Таблица в БД Oracle
 
                 TStorageOraSql* StorOraTable = new TStorageOraSql();
                 DstStor = (TStorage*) StorOraTable;
@@ -292,20 +349,29 @@ bool __fastcall TXmlLoader::LoadParameters()
 
 
                 // Если задано имя пользователя и пароль в командной строке
-                if (clSrcUsername != "" || clSrcPassword != "") {
+                if (clSrcUsername != "" || clSrcPassword != "")
+                {
                     Table.Username = clSrcUsername;
                     Table.Password = clSrcPassword;
-                } else {
+                }
+                else
+                {
                     AnsiString code = msxml.GetAttributeValue(subnode, "code");
-                    if (code != "") {
+                    if (code != "")
+                    {
                         TEncoder encoder;
-                        try {
+                        try
+                        {
                             encoder.Decode(code, Table.Username, Table.Password );
-                        } catch (...) {
+                        }
+                        catch (...)
+                        {
                             Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
                             return false;
                         }
-                    } else {    // Если задано не зашифрованное значение
+                    }
+                    else
+                    {    // Если задано не зашифрованное значение
                         Table.Username = msxml.GetAttributeValue(subnode, "username");
                         Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                     }
@@ -319,10 +385,13 @@ bool __fastcall TXmlLoader::LoadParameters()
                 StorOraTable->addTable(Table);
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
-                while (!node_fields.IsEmpty()) {
-                    if (msxml.GetNodeName(node_fields) == "field") {
+                while ( !VarIsClear(node_fields) )
+                {
+                    if (msxml.GetNodeName(node_fields) == "field")
+                    {
                         TOraField* field = StorOraTable->addField();      // Возможно заменить на
-                        if (field != NULL) {
+                        if (field != NULL)
+                        {
                             field->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
@@ -331,7 +400,9 @@ bool __fastcall TXmlLoader::LoadParameters()
                     }
                     node_fields = msxml.GetNextNode(node_fields);
                 }
-            } else if (sExportType == "excel") {
+            }
+            else if (sExportType == "excel")
+            {
 
                 TStorageExcel* StorageExcel = new TStorageExcel();
                 DstStor = (TStorage*) StorageExcel;
@@ -345,22 +416,29 @@ bool __fastcall TXmlLoader::LoadParameters()
                 StorageExcel->addTable(Table);
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
-                while (!node_fields.IsEmpty()) {
-                    if (msxml.GetNodeName(node_fields) == "field") {
+                while ( !VarIsClear(node_fields))
+                {
+                    if (msxml.GetNodeName(node_fields) == "field")
+                    {
                         TExcelField* field = StorageExcel->addField();
-                        if (field) {
+                        if (field != NULL)
+                        {
                             field->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
-                            field->format = msxml.GetAttributeValue(node_fields, "format", "");
+                            field->format = msxml.GetAttributeValue(node_fields, "format", String(""));
                             field->name_src = LowerCase(msxml.GetAttributeValue(node_fields, "name_src", field->name));
                             if (field->name_src == "" )
+                            {
                                 field->name_src = field->name;
                             }
+                        }
                     }
                     node_fields = msxml.GetNextNode(node_fields);
                 }
-            } else if (sExportType == "sqltext") {
+            }
+            else if (sExportType == "sqltext")
+            {
 
                 TStorageSqlText* StorageSqlText = new TStorageSqlText();
                 DstStor = (TStorage*) StorageSqlText;
@@ -375,16 +453,20 @@ bool __fastcall TXmlLoader::LoadParameters()
                 StorageSqlText->addTable(Table);
 
                 Variant node_fields = msxml.GetFirstNode(subnode);
-                while (!node_fields.IsEmpty()) {
-                    if (msxml.GetNodeName(node_fields) == "field") {
+                while ( !VarIsClear(node_fields) )
+                {
+                    if (msxml.GetNodeName(node_fields) == "field")
+                    {
                         TSqlTextField* field = StorageSqlText->addField();
-                        if (field) {
+                        if (field)
+                        {
                             field->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
                             //field->format = msxml.GetAttributeValue(node_fields, "format", "");
                             field->name_src = LowerCase(msxml.GetAttributeValue(node_fields, "name_src", field->name));
-                            if (field->name_src == "" ) {
+                            if (field->name_src == "" )
+                            {
                                 field->name_src = field->name;
                             }
                         }

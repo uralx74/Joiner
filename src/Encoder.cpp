@@ -3,6 +3,9 @@
 //---------------------------------------------------------------------------
 
 #include "Encoder.h"
+#include "taskutils.h"
+
+using namespace strtools;
 
 
 const AnsiString TEncoder::MasterKey = "p65i76+l6OUU$5kVIy149WrW5&?qt+tB2!+Xrg1O?FZk_&2e?6|F1)M9zU.}Zog{";

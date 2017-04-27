@@ -19,16 +19,20 @@ void TStorageExcel::addTable(const TExcelTable& Table)
     TSearchRec SearchRec;
     FindFirst(Table.File, faAnyFile, SearchRec);
 
-    if (SearchRec.Name != "") {     // Если файл найден, то формируем новый элемент-Таблицу
+    if (SearchRec.Name != "")
+    {     // Если файл найден, то формируем новый элемент-Таблицу
         AnsiString FilePath = ExtractFilePath(Table.File);
-        do {
+        do
+        {
             TExcelTable NewTable;
             NewTable.File = FilePath + SearchRec.Name;
             NewTable.Truncate = Table.Truncate;
             Tables.push_back(NewTable);
             TableCount++;
         } while ( FindNext(SearchRec) == 0);
-    } else {    // Если файл не найден, добавляем таблицу как есть
+    }
+    else
+    {    // Если файл не найден, добавляем таблицу как есть
         Tables.push_back(Table);
         TableCount++;
     }
@@ -43,73 +47,99 @@ void TStorageExcel::openTable(bool ReadOnly)
 
     // Продумать случаи открытия - создание пустого файла!!!!
     msexcel = new MSExcelWorks();
-    if (ReadOnly) {
-        if (FileExists(Tables[TableIndex].File)) {
-            try {
+    if (ReadOnly)
+    {
+        if (FileExists(Tables[TableIndex].File))
+        {
+            try
+            {
                 msexcel->OpenApplication();
                 Workbook = msexcel->OpenDocument(Tables[TableIndex].File);
                 Worksheet = msexcel->GetSheet(Workbook, 1);
-            } catch (Exception &e) {
+            }
+            catch (Exception &e)
+            {
                 throw Exception("Can't to open file  \"" + Tables[TableIndex].File + "\".\n" + e.Message);
             }
-        } else {
+        }
+        else
+        {
             throw Exception("File not found \"" + Tables[TableIndex].File + "\".");
         }
-    } else {  // Если открываем как приемник, то в любом случае создаем новый файл
-        if (FileExists(Tables[TableIndex].File)) {
-            try {
+    } else
+    {  // Если открываем как приемник, то в любом случае создаем новый файл
+        if ( FileExists(Tables[TableIndex].File) )
+        {
+            try
+            {
                 msexcel->OpenApplication();
                 Workbook = msexcel->OpenDocument(Tables[TableIndex].File);
-            } catch (Exception &e) {
+            }
+            catch (Exception &e)
+            {
                 closeTable();
                 throw Exception("Can't to open file  \"" + Tables[TableIndex].File + "\".\n" + e.Message);
             }
-            if (msexcel->IsReadOnly(Workbook)) {
+            if ( msexcel->IsReadOnly(Workbook) )
+            {
                 closeTable();
                 throw Exception("Can't to open file  \"" + Tables[TableIndex].File + "\" for writing.");
             }
             Worksheet = msexcel->GetSheet(Workbook, 1);
 
-            for(int i = 0; i < Fields.size(); i++) {
+            for(int i = 0; i < Fields.size(); i++)
+            {
                 AnsiString sCellValue = msexcel->ReadCell(Worksheet, 1, i+1);
-                if (Fields[i]->name != sCellValue) {
+                if (Fields[i]->name != sCellValue)
+                {
                     closeTable();
                     throw Exception("Field names \"" + Fields[i]->name + "\" and \"" + sCellValue +"\" do not match.");
                 }
             }
-            if (Tables[TableIndex].Truncate) {
+            if (Tables[TableIndex].Truncate)
+            {
                 //msexcel->SetVisibleExcel();
                 msexcel->ClearWorksheet(Worksheet);
                 // Создаем "структуру" таблицы (шапку)
-                for(int i = 0; i < Fields.size(); i++) {
+                for(int i = 0; i < Fields.size(); i++)
+                {
                     msexcel->WriteToCell(Worksheet, Fields[i]->name, 1, i+1, "@");
                 }
             }
-        } else {
-            try {
+        }
+        else
+        {
+            try
+            {
                 msexcel->OpenApplication();
                 Workbook = msexcel->OpenDocument();
                 Worksheet = msexcel->GetSheet(Workbook, 1);
 
                 // Создаем "структуру" таблицы (шапку)
-                for(int i = 0; i < Fields.size(); i++) {
+                for(int i = 0; i < Fields.size(); i++)
+                {
                     msexcel->WriteToCell(Worksheet, Fields[i]->name, 1, i+1, "@");
                 }
                 msexcel->SaveDocument(Workbook, Tables[TableIndex].File);
                 //Modified = true;
-            } catch (Exception &e) {
+            }
+            catch (Exception &e)
+            {
                 throw Exception("Can't to create file  \"" + Tables[TableIndex].File + "\".\n" + e.Message);
             }
         }
     }
 
     // Подсчет столбцов
-    if (ReadOnly) {
+    if (ReadOnly)
+    {
         int j = 1;
         String sCellValue;
-        while ( (sCellValue = msexcel->ReadCell(Worksheet, 1, j)) != "") {
+        while ( (sCellValue = msexcel->ReadCell(Worksheet, 1, j)) != "" )
+        {
             TExcelField* field = this->addField();
-            if (field != NULL) {
+            if ( field != NULL )
+            {
                 field->name = LowerCase(sCellValue);
                 field->index = j;
                 j++;
@@ -127,7 +157,8 @@ void TStorageExcel::openTable(bool ReadOnly)
     // Подсчет строк
     int i = 2;
     String sCellValue;
-    while ( (sCellValue = msexcel->ReadCell(Worksheet, i, 1)) != "") {
+    while ( (sCellValue = msexcel->ReadCell(Worksheet, i, 1)) != "" )
+    {
         i++;
     }
     RecordCount = i - 2;
@@ -144,7 +175,8 @@ void TStorageExcel::openTable(bool ReadOnly)
 // Закрывает таблицу
 void TStorageExcel::closeTable()
 {
-    if (msexcel != NULL) {
+    if (msexcel != NULL)
+    {
         Active = false;
         msexcel->CloseApplication();
         delete msexcel;
@@ -168,7 +200,8 @@ bool TStorageExcel::eor()
 // Возвращает наименование активного источника/приемника данных
 AnsiString TStorageExcel::getTable()
 {
-    if (!eot()) {
+    if ( !eot() )
+    {
         return Tables[TableIndex].File;
     }
 }
@@ -183,9 +216,12 @@ Variant TStorageExcel::getFieldValue(TStorageField* Field)
 
     TExcelField* field = static_cast<TExcelField*>(findField(Field->name_src));
 
-    if (field != NULL) {
+    if (field != NULL)
+    {
         return msexcel->ReadCell(Worksheet, RecordIndex+2, field->index);
-    } else {
+    }
+    else
+    {
         throw Exception("Field not found " + fieldName + ".");
     }
 
@@ -208,7 +244,8 @@ void TStorageExcel::append()
 // Устанавливает значение активного поля
 void TStorageExcel::setFieldValue(Variant Value)
 {
-    if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable) {
+    if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable)
+    {
         msexcel->WriteToCell(Worksheet, Value, RecordIndex+2, FieldIndex+1, ((TExcelField*)Fields[FieldIndex])->format);
     }
 }
@@ -218,7 +255,8 @@ void TStorageExcel::setFieldValue(Variant Value)
 TExcelField* TStorageExcel::addField()
 {
     TExcelField* Field = new TExcelField();
-    if (Field) {
+    if (Field != NULL)
+    {
         Fields.push_back(dynamic_cast<TStorageField*>(Field));
         FieldCount++;
     }
@@ -230,7 +268,8 @@ TExcelField* TStorageExcel::addField()
 void TStorageExcel::commit()
 {
     //Здесь сделать 
-    if (ReadOnly) {
+    if ( ReadOnly )
+    {
         throw Exception("Can't commit the storage because it is read-only.");
         //return;
     }

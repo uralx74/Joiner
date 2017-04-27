@@ -31,7 +31,8 @@ void __fastcall TTransferModule::Start()
     //pParentThread = Thread;
     TXmlLoader* pXmlLoader = new TXmlLoader();
 
-    if (pXmlLoader->LoadParameters()) {
+    if (pXmlLoader->LoadParameters())
+    {
         Transfer(pXmlLoader->SrcStor, pXmlLoader->DstStor);
     }
 
@@ -42,7 +43,8 @@ void __fastcall TTransferModule::Start()
 //
 void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
 {
-    if (!Src || !Dst) {
+    if (!Src || !Dst)
+    {
         Logger->WriteLog("Процедура копирования неможет быть запущена, так как " +
             ((String)(!Src? "источник" : "приемник")) + " не задан.");
         return;
@@ -54,10 +56,13 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
 
     int log_n;
     log_n = Logger->WriteLog("Открытие приемника >");
-    try {
+    try
+    {
         Dst->openTable(false);   // Открываем приемник
         Logger->WriteLog("Приемник открыт успешно.", log_n);
-    } catch (Exception &e) {
+    }
+    catch (Exception &e)
+    {
         Logger->WriteLog("Не удалось открыть приемник \"" + Dst->getTable() + "\". " + e.Message, log_n);
         Dst->closeTable();
         Logger->WriteLog("Процедура копирования данных завершена.");
@@ -76,12 +81,16 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
         throw Exception("Start()");
     }*/
 
-    while(!Src->eot()) { // Цикл по таблицам
-        try {
+    while(!Src->eot())
+    { // Цикл по таблицам
+        try
+        {
             log_n = Logger->WriteLog("Открытие источника >");
             Src->openTable(true);   // Открываем источник
             Logger->WriteLog("Источник открыт успешно.", log_n);
-        } catch (Exception &e) {    // если ошибка, переходим на следующую таблицу
+        }
+        catch (Exception &e)
+        {    // если ошибка, переходим на следующую таблицу
             Logger->WriteLog("Не удалось открыть источник \"" + Src->getTable()+ "\" (" + Src->getTableStage() + "). " + e.Message, log_n);
             Src->nextTable();
             continue;
@@ -91,7 +100,8 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
         // Если источник открыт успешно
         log_n = Logger->WriteLog("Загружается > \"" + Src->getTable() + "\" (" + Src->getTableStage() + "; " + Src->getRecordStage()+")");
 
-        try {
+        try
+        {
             // Здесь сделать подготовку приемника.
             // Чтото вроде ;
             // В приемнике необходимо отметить те поля, которым есть сопоставленные поля в источнике
@@ -116,19 +126,26 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
                 {
                     bool isLinkedField = Dst->isLinkedField();
                     bool isActiveField = Dst->isActiveField();
-                    if (isLinkedField && isActiveField) {
+                    if (isLinkedField && isActiveField)
+                    {
                         Variant Value;
 
-                        try {
+                        try
+                        {
                             TStorageField *field = Dst->getField();
                             Value = Src->getFieldValue(field);
-                        } catch (Exception &e) {
+                        }
+                        catch (Exception &e)
+                        {
                             Logger->WriteLog("Ошибка в источнике \"" + Src->getTable() + "\" (" + Src->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
                             throw Exception("");
                         }
-                        try {
+                        try
+                        {
                             Dst->setFieldValue(Value);
-                        } catch (Exception &e) {
+                        }
+                        catch (Exception &e)
+                        {
                             Logger->WriteLog("Ошибка в приемнике \"" + Dst->getTable() + "\" (" + Dst->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
                             throw Exception("");
                         }
@@ -155,8 +172,11 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
             Logger->WriteLog("Загружено " + IntToStr(LoadedRecordsCount) + " записей из \"" + Src->getTable() + "\"", log_n);
             DstRecordCount = Dst->getRecordCount();
 
-        } catch (Exception &e) {
-            if (e.Message != "") {
+        }
+        catch (Exception &e)
+        {
+            if (e.Message != "")
+            {
                 Logger->WriteLog("Непредвиденая ошибка. Источник: \"" + Src->getTable() + "\" (" + Src->getTableStage() + "), приемник \"" + Dst->getTable()+ "\". " + e.Message /*+ Dst->GetSrcField()*/);
             }
         }

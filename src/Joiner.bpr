@@ -2,60 +2,90 @@
 <!-- C++Builder XML Project -->
 <PROJECT>
   <MACROS>
-    <VERSION value="BCB.05.03"/>
+    <VERSION value="BCB.06.00"/>
     <PROJECT value="Joiner.exe"/>
-    <OBJFILES value="Joiner.obj pch.obj Unit1.obj ..\util\MSExcelWorks.obj ..\util\OleXml.obj 
-      ..\util\CommandLine.obj TransferModule.obj Storage.obj StorageOra.obj 
-      StorageDbf.obj StorageText.obj StorageExcel.obj Logger.obj 
-      ..\util\VigenereCipher.obj ..\util\TransposCipher.obj Encoder.obj 
-      TransferThread.obj XmlParamsLoader.obj"/>
+    <OBJFILES value="Joiner.obj pch.obj Unit1.obj TransferModule.obj Storage.obj StorageOra.obj 
+      StorageDbf.obj StorageText.obj StorageExcel.obj Logger.obj Encoder.obj 
+      TransferThread.obj XmlParamsLoader.obj ..\..\util\CommandLine.obj 
+      ..\..\util\MSWordWorks.obj ..\..\util\MSExcelWorks.obj 
+      ..\..\util\OleXml.obj ..\..\util\vigenerecipher.obj 
+      ..\..\util\TransposCipher.obj"/>
     <RESFILES value="Joiner.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) Unit1.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value="TDBF_C5R.lib vclado50.lib ODAC50.lib VCLBDE50.lib DAC50.lib Vcldb50.lib 
-      Vcl50.lib"/>
-    <SPARELIBS value="Vcl50.lib Vcldb50.lib DAC50.lib VCLBDE50.lib ODAC50.lib vclado50.lib 
-      TDBF_C5R.lib"/>
-    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi Vcldb50.bpi vclado50.bpi ibsmp50.bpi 
-      VCLBDE50.bpi vcldbx50.bpi Qrpt50.bpi VCLIB50.bpi Vclmid50.bpi vclie50.bpi 
-      Inetdb50.bpi Inet50.bpi webmid50.bpi bcbie50.bpi dclocx50.bpi 
-      bcb2kaxserver50.bpi crcontrols50.bpi ODAC50.bpi oraprov50.bpi vcl50.bpi 
-      dclusr50.bpi Halcyon6.bpi TDBF_C5R.bpi Dss50.bpi DAC50.bpi"/>
-    <PATHCPP value=".;..\util"/>
+    <LIBRARIES value="dacvcl60.lib odacvcl60.lib dac60.lib dsnap.lib dsnapcon.lib xmlrtl.lib 
+      inet.lib inetdb.lib webdsnap.lib adortl.lib bdertl.lib vcldb.lib dbrtl.lib 
+      vcl.lib rtl.lib"/>
+    <SPARELIBS value="rtl.lib vcl.lib dbrtl.lib vcldb.lib bdertl.lib adortl.lib webdsnap.lib 
+      inetdb.lib inet.lib xmlrtl.lib dsnapcon.lib dsnap.lib dac60.lib 
+      odacvcl60.lib dacvcl60.lib"/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi dbrtl.bpi vcldb.bpi adortl.bpi 
+      ibsmp.bpi bdertl.bpi vcldbx.bpi qrpt.bpi ibxpress.bpi dsnap.bpi vclie.bpi 
+      inetdb.bpi inet.bpi webdsnap.bpi bcbie.bpi dclocx.bpi bcb2kaxserver.bpi 
+      crcontrols50.bpi oraprov50.bpi vcl50.bpi DCLUSR.bpi Halcyon6.bpi dss.bpi 
+      DAC50.bpi"/>
+    <PATHCPP value=".;..\..\util"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
-    <LINKER value="tlink32"/>
-    <USERDEFINES value="_DEBUG"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value=""/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="Joiner.cpp"/>
-    <INCLUDEPATH value="C:\;s;es;res;&quot;C:\Program Files\Borland\CBuilder5\Projects\&quot;;..\util;&quot;C:\Program Files\Borland\CBuilder5\util\FormLogin\&quot;;&quot;C:\Program Files\Borland\CBuilder5\Projects\utils\&quot;;&quot;C:\Program Files\Borland\CBuilder5\LoadBase\&quot;;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;&quot;C:\Program Files\Borland\CBuilder5\tdbf\&quot;"/>
-    <LIBPATH value="C:\;s;es;res;&quot;C:\Program Files\Borland\CBuilder5\Projects\&quot;;..\util;$(BCB)\Projects\Lib;&quot;C:\Program Files\Borland\CBuilder5\util\FormLogin\&quot;;&quot;C:\Program Files\Borland\CBuilder5\Projects\utils\&quot;;$(BCB)\odac\Lib\CBuilder5;&quot;C:\Program Files\Borland\CBuilder5\LoadBase\&quot;;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;&quot;C:\Program Files\Borland\CBuilder5\tdbf\&quot;"/>
+    <INCLUDEPATH value="..\..\util;res;$(BCB)\include;$(BCB)\include\vcl;C:\_PROGRS\components\TDbf\tdbf691;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;..\util"/>
+    <LIBPATH value="..\..\util;res;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6"/>
     <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IC:\. -Is -Ies -Ires -I&quot;C:\Program Files\Borland\CBuilder5\Projects\.&quot; 
-      -I..\util -I&quot;C:\Program Files\Borland\CBuilder5\util\FormLogin\.&quot; 
-      -I&quot;C:\Program Files\Borland\CBuilder5\Projects\utils\.&quot; 
-      -I&quot;C:\Program Files\Borland\CBuilder5\LoadBase\.&quot; -I$(BCB)\include 
-      -I$(BCB)\include\vcl -I$(BCB)\Odac\Include 
-      -I&quot;C:\Program Files\Borland\CBuilder5\tdbf\.&quot; -src_suffix cpp -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=pch.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c -tW -tWM"/>
-    <PFLAGS value="-$Y+ -$W -$O- -v -JPHNE -M"/>
+    <IDLCFLAGS value="-I..\..\util -Ires -I$(BCB)\include -I$(BCB)\include\vcl 
+      -IC:\_PROGRS\components\TDbf\tdbf691 
+      -IC:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6 
+      -IC:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6 -I..\util 
+      -src_suffix cpp -boa"/>
+    <CFLAG1 value="-O2 -H=pch.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -c -tW -tWM"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn"/>
+    <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+    <OTHERFILES value=""/>
   </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Joiner.cpp" FORMNAME="" UNITNAME="Joiner" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="pch.cpp" FORMNAME="" UNITNAME="pch" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Joiner.res" FORMNAME="" UNITNAME="Joiner" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Unit1.cpp" FORMNAME="Form1" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TransferModule.cpp" FORMNAME="" UNITNAME="TransferModule" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Storage.cpp" FORMNAME="" UNITNAME="Storage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StorageOra.cpp" FORMNAME="" UNITNAME="StorageOra" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StorageDbf.cpp" FORMNAME="" UNITNAME="StorageDbf" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StorageText.cpp" FORMNAME="" UNITNAME="StorageText" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StorageExcel.cpp" FORMNAME="" UNITNAME="StorageExcel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Logger.cpp" FORMNAME="" UNITNAME="Logger" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Encoder.cpp" FORMNAME="" UNITNAME="Encoder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TransferThread.cpp" FORMNAME="" UNITNAME="TransferThread" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="XmlParamsLoader.cpp" FORMNAME="" UNITNAME="XmlParamsLoader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\CommandLine.cpp" FORMNAME="" UNITNAME="CommandLine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\MSWordWorks.cpp" FORMNAME="" UNITNAME="MSWordWorks" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\MSExcelWorks.cpp" FORMNAME="" UNITNAME="MSExcelWorks" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\OleXml.cpp" FORMNAME="" UNITNAME="OleXml" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\vigenerecipher.cpp" FORMNAME="" UNITNAME="vigenerecipher" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\util\TransposCipher.cpp" FORMNAME="" UNITNAME="TransposCipher" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
   <IDEOPTIONS>
 [Version Info]
 IncludeVerInfo=1
@@ -63,7 +93,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=0
-Build=3
+Build=4
 Debug=0
 PreRelease=0
 Special=0
@@ -75,7 +105,7 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.0.3
+FileVersion=1.0.0.4
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -84,68 +114,75 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-$(BCB)\Projects\Bpl\PackageAlt.bpl=c:\program files\borland\cbuilder5\Projects\Bpl\PackageAlt
-$(BCB)\Projects\Bpl\Halcyon6.bpl=Halcyon Database Engine 6
-$(BCB)\Bin\bcbsmp50.bpl=Borland C++ Sample Components
-$(BCB)\Bin\bcb2kaxserver50.bpl=Borland C++Builder COM Server Components Sample Package
-$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
-$(BCB)\Bin\dclado50.bpl=Borland ADO DB Components
-$(BCB)\Bin\applet50.bpl=Borland Control Panel Applet Package
-$(BCB)\Bin\dclsmpedit50.bpl=Borland Editor Script Enhancements
-$(BCB)\Bin\dclocx50.bpl=Borland Sample Imported ActiveX Controls
-$(BCB)\Bin\mfcwizard.bpl=MFC Wizard
-$(BCB)\Projects\Bpl\dclusr50.bpl=Borland User Components
-
 [HistoryLists\hlIncludePath]
-Count=13
-Item0=C:\;s;es;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
-Item1=C:\;s\;es\;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
-Item2=C:\Program Files\Borland\CBuilder5\Projects;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
-Item3=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
-Item4=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf
-Item5=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item6=..\util\FormLogin;C:\Program Files\Borland\CBuilder5\Projects\;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item7=C:\Program Files\Borland\CBuilder5\Projects\;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item8=C:\Program Files\Borland\CBuilder5\Projects;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item9=utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item10=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
-Item11=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include\
-Item12=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;C:\Proagram Files\Borland\CBuilder5\Odac\Include\
+Count=18
+Item0=..\..\util;res;$(BCB)\include;$(BCB)\include\vcl;C:\_PROGRS\components\TDbf\tdbf691;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;..\util
+Item1=..\..\util;res;$(BCB)\include;$(BCB)\include\vcl;C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;..\util
+Item2=res;$(BCB)\include;$(BCB)\include\vcl;C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;..\util
+Item3=res;..\util;$(BCB)\include;$(BCB)\include\vcl;C:\PROGRS\components\TDbf\tdbf691\tdbf;C:\PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\PROGRS\components\odac\ODAC938src\Lib\CBuilder6
+Item4=C:\;res;..\util;$(BCB)\include;$(BCB)\include\vcl;C:\PROGRS\components\TDbf\tdbf691\tdbf;C:\PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\PROGRS\components\odac\ODAC938src\Lib\CBuilder6
+Item5=C:\;s;es;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
+Item6=C:\;s\;es\;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
+Item7=C:\Program Files\Borland\CBuilder5\Projects;..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
+Item8=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf\
+Item9=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include;C:\Program Files\Borland\CBuilder5\tdbf
+Item10=..\util;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item11=..\util\FormLogin;C:\Program Files\Borland\CBuilder5\Projects\;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item12=C:\Program Files\Borland\CBuilder5\Projects\;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item13=C:\Program Files\Borland\CBuilder5\Projects;utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item14=utils;..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item15=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include
+Item16=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Odac\Include\
+Item17=..\LoadBase;$(BCB)\include;$(BCB)\include\vcl;C:\Proagram Files\Borland\CBuilder5\Odac\Include\
 
 [HistoryLists\hlLibraryPath]
-Count=13
-Item0=C:\;s;es;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
-Item1=C:\;s\;es\;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
-Item2=C:\Program Files\Borland\CBuilder5\Projects;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
-Item3=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
-Item4=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf
-Item5=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item6=..\util\FormLogin;C:\Program Files\Borland\CBuilder5\Projects\;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item7=C:\Program Files\Borland\CBuilder5\Projects\;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item8=C:\Program Files\Borland\CBuilder5\Projects;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item9=utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item10=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
-Item11=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib\
-Item12=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;C:\Proagram Files\Borland\CBuilder5\Odac\Lib\
+Count=20
+Item0=..\..\util;res;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6
+Item1=..\..\util;res;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691\;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6
+Item2=..\..\util;res;..\util;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6
+Item3=..\..\util;res;..\util;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\current\util
+Item4=res;..\util;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\_PROGRS\components\odac\ODAC938src\Include\CBuilder6;C:\_PROGRS\current\util
+Item5=res;..\util;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\PROGRS\components\TDbf\tdbf691\tdbf;C:\PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\PROGRS\components\odac\ODAC938src\Include\CBuilder6
+Item6=C:\;res;..\util;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib;C:\PROGRS\components\TDbf\tdbf691\tdbf;C:\PROGRS\components\odac\ODAC938src\Lib\CBuilder6;C:\PROGRS\components\odac\ODAC938src\Include\CBuilder6
+Item7=C:\;s;es;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
+Item8=C:\;s\;es\;res;C:\Program Files\Borland\CBuilder5\Projects\;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
+Item9=C:\Program Files\Borland\CBuilder5\Projects;..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
+Item10=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf\
+Item11=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib;C:\Program Files\Borland\CBuilder5\tdbf
+Item12=..\util;$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder5\util\FormLogin\;C:\Program Files\Borland\CBuilder5\Projects\utils\;$(BCB)\odac\Lib\CBuilder5;C:\Program Files\Borland\CBuilder5\LoadBase\;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item13=..\util\FormLogin;C:\Program Files\Borland\CBuilder5\Projects\;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item14=C:\Program Files\Borland\CBuilder5\Projects\;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item15=C:\Program Files\Borland\CBuilder5\Projects;utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item16=utils;$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item17=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib
+Item18=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;$(BCB)\ODAC\Lib\
+Item19=$(BCB)\odac\Lib\CBuilder5;..\LoadBase;$(BCB)\lib\obj;$(BCB)\lib;C:\Proagram Files\Borland\CBuilder5\Odac\Lib\
 
 [HistoryLists\hlDebugSourcePath]
-Count=2
-Item0=c:\program files\borland\cbuilder5\source\vcl;c:\Program Files\Borland\CBuilder5\tdbf\
-Item1=$(BCB)\source\vcl
+Count=5
+Item0=C:\_PROGRS\components\TDbf\tdbf691\;C:\_PROGRS\components\odac\ODAC938src\Source\CBuilder6
+Item1=C:\_PROGRS\components\TDbf\tdbf691\tdbf;C:\_PROGRS\components\odac\ODAC938src\Source\CBuilder6
+Item2=C:\PROGRS\components\TDbf\tdbf691\tdbf;C:\PROGRS\components\odac\ODAC938src\Source\CBuilder6
+Item3=c:\program files\borland\cbuilder5\source\vcl;c:\Program Files\Borland\CBuilder5\tdbf\
+Item4=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=1
 Item0=_DEBUG
 
 [Debugging]
-DebugSourceDirs=c:\program files\borland\cbuilder5\source\vcl;c:\Program Files\Borland\CBuilder5\tdbf\
+DebugSourceDirs=C:\_PROGRS\components\TDbf\tdbf691\;C:\_PROGRS\components\odac\ODAC938src\Source\CBuilder6
 
 [Parameters]
-RunParams=
+RunParams=-c=&quot;c:\mb\mb.xml&quot;
+Launcher=
+UseLauncher=0
+DebugCWD=
 HostApplication=
 RemoteHost=
 RemotePath=
+RemoteLauncher=
+RemoteCWD=
 RemoteDebug=0
 
 [Compiler]
@@ -157,5 +194,10 @@ LinkCGLIB=0
 AddServerUnit=1
 AddClientUnit=1
 PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
   </IDEOPTIONS>
 </PROJECT>

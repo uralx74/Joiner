@@ -9,6 +9,9 @@
 #pragma link "dbf"
 #pragma link "DBAccess"
 #pragma link "MemDS"
+#pragma link "DBAccess"
+#pragma link "MemDS"
+#pragma link "Ora"
 #pragma resource "*.dfm"
 TForm1 *Form1;
 //---------------------------------------------------------------------------
@@ -99,14 +102,18 @@ void __fastcall TForm1::N1Click(TObject *Sender)
 // Выход из программы
 void __fastcall TForm1::ExitButtonClick(TObject *Sender)
 {
-    if (pTransferThread != NULL) {
-        if (MessageBoxQuestion("Поток копирования данных активен. Вы уверены, что хотите прервать и закрыть программу?")) {
+    if (pTransferThread != NULL)
+    {
+        if (MessageBoxQuestion("Поток копирования данных активен. Вы уверены, что хотите прервать и закрыть программу?"))
+        {
             // Прерываем поток, ждем его завершения
             Logger->WriteLog("Активировано принудительное завершение потока копирования данных.");
             pTransferThread->Terminate(); // Не реализовано!
             pTransferThread->WaitFor();
             //WaitForSingleObject((HANDLE)pTransferThread->Handle, INFINITE);
-        } else {
+        }
+        else
+        {
             return; // Отмена
         }
     }
@@ -121,7 +128,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
 {
     LogRichEdit->Lines->Clear();
 
-    Form1->Caption = "Joiner " + AppFullVersion;
+    Form1->Caption = "Joiner " + AppVer::FullVersion;
 
     Logger->AddConsole(LogRichEdit);    // Добавляем консоль, для вывода лог-сообщений
 

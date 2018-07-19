@@ -15,65 +15,6 @@ A simple utility for joining tables in different formats
 * Supports log files
 * Does't eeds to install
 
-##
-
-### Example xml-config file
-
-#### Excel to Dbf
-```
-<?xml version="1.0" encoding="windows-1251"?>
-<config>
-  <import>
-      <excel file="..\data\*_import.xlsx" />
-  </import>
-  <export>
-    <dbase4 file="..\data\result.dbf" truncate="true">
-      <field name="t" name_src="t" type="C" length="20"/>
-    </dbase4>
-  </export>
-</config>
-```
-
-#### Excel to Excel (Multiple files to one file)
-
-```
-<?xml version="1.0" encoding="windows-1251"?>
-<config>
-  <import>
-      <excel file="..\data\*_import.xlsx" />
-  </import>
-  <export>
-    <excel file="..\data\result.xlsx" truncate="true">
-      <field name="t" name_src="t" format="@"/>
-    </excel>
-  </export>
-</config>
-```
-
-Dbf to Oracle throuth Pl/Sql-procedure (Multiple files to one file)
-```
-<?xml version="1.0" encoding="windows-1251"?>
-<config>
-  <import>
-      <dbase4 file="s:\CMI\Joiner\input_mailbank\bd*.dbf"/>
-  </import>
-  <export>
-    <oraproc server="10.7.0.10:1521:esale" procedure="PK_ADMIN_EDIT.P_MAILBANK_ADD_ED_new" table="nasel_mailbank" truncate="true" code="йrOЫ.%ebяB#&quot;fЧД5">
-      <field name="p_nsezon" name_src="nsezon"/>
-      <field name="p_summa_e" name_src="summa_e"/>
-      <field name="p_p_nd" name_src="p_nd"/>
-      <!-- Disabled -->
-      <field name="gorod" type="C" length="40" enable="false"/>
-    </oraproc>
-  </export>
-</config>
-```
-
-### Example command line
-```
-joiner -c="..\config\config_xlsx2dbf.xml" -l="..\log\%%d_%%t_joiner_xlsx2dbf.log" -lr -a
-```
-
 ## OS support
 * Windows desktop: 2000, XP, Vista, 7, 8, 8.1, 10
 * Windows server: 2003, Home, 2008, 2012, 2012 R2
@@ -88,3 +29,7 @@ Joiner - это простая утилита для объединения да
 * Поддерживает параметры командной строки
 * Поддерживает журналирование выполнения задания
 * Не требует установки
+
+## Поддерживаемые Операционные Системы
+* Windows desktop: 2000, XP, Vista, 7, 8, 8.1, 10
+* Windows server: 2003, Home, 2008, 2012, 2012 R2

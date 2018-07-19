@@ -1,14 +1,11 @@
-# Joiner v.1
-A simple utility for joining tables in different formats
 
 # Joiner / [English](https://github.com/uralx74/Joiner/tree/master#joiner-en) / [Русский](https://github.com/uralx74/Joiner/tree/master#joiner-ru) 
 
 * [Online Manual](https://github.com/uralx74/Joiner/wiki#joiner-manual) / [Онлайн Руководство Пользователя](http://www.github.com/) 
-* [Offline manual](http://www.github.com/) / [Скачать Руководство Пользователя](http://www.github.com/) 
-* [FAQ](http://www.github.com/) / [ Часто Задаваемые Вопросы](http://www.github.com/) 
-
 
 # Joiner [En] 
+
+A simple utility for joining tables in different formats
 
 ## Features
 * Connects data in different types of sorce like Oracle, Dbf, Excel and Text
@@ -16,7 +13,7 @@ A simple utility for joining tables in different formats
 * Uses xml-config files
 * Supports command line options
 * Supports log files
-* Not needs to install
+* Does't eeds to install
 
 ##
 
@@ -83,8 +80,9 @@ joiner -c="..\config\config_xlsx2dbf.xml" -l="..\log\%%d_%%t_joiner_xlsx2dbf.log
 
 # Joiner [Ru]
 
+Joiner - это простая утилита для объединения данных из источников разных типов.
+
 ## Особенности
-* Connects data in different types of sorce like Oracle, Dbf, Excel and Text
 * Обладает простым интерфейсом
 * Использует xml-файлы для конфигурирования задания
 * Поддерживает параметры командной строки

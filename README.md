@@ -3,7 +3,7 @@ A simple utility for joining tables in different formats
 
 # Joiner / [English](https://github.com/uralx74/Joiner/tree/master#joiner-en) / [Русский](https://github.com/uralx74/Joiner/tree/master#joiner-ru) 
 
-* [Online Manual](http://www.github.com/) / [Онлайн Руководство Пользователя](http://www.github.com/) 
+* [Online Manual](https://github.com/uralx74/Joiner/wiki#joiner-manual) / [Онлайн Руководство Пользователя](http://www.github.com/) 
 * [Offline manual](http://www.github.com/) / [Скачать Руководство Пользователя](http://www.github.com/) 
 * [FAQ](http://www.github.com/) / [ Часто Задаваемые Вопросы](http://www.github.com/) 
 

@@ -1,7 +1,7 @@
 
 # Joiner / [English](https://github.com/uralx74/Joiner/tree/master#joiner-en) / [Русский](https://github.com/uralx74/Joiner/tree/master#joiner-ru) 
 
-* [Online Manual](https://github.com/uralx74/Joiner/wiki#joiner-manual) / [Онлайн Руководство Пользователя](http://www.github.com/) 
+* [Online Manual](https://github.com/uralx74/Joiner/wiki/Online-Manual) / [Онлайн Руководство Пользователя](http://www.github.com/) 
 
 # Joiner [En] 
 

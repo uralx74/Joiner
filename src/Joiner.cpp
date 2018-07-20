@@ -39,10 +39,9 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     Logger->WriteLog("---------------------------------------------------------------------------" );
     Logger->WriteLog("Joiner " + AppVer::FullVersion);
     Logger->WriteLog("AppFileName = " + Application->ExeName);
-    //Logger->WriteLog("LogFileName = " + TLogger::GetLogFilename(sLogFileName));
     Logger->WriteLog("LogFileName = " + Logger->GetLogFilename(sLogFileName));
 
-    Logger->WriteLog("Программа запущена." );
+    Logger->WriteLog("The program is started." );
     //Logger->WriteLog("Полный путь " + Application->ExeName + " .");
     // Выводить путь
     // имя компьютера
@@ -53,59 +52,63 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
     // Выводим справку о программе, если требуется
-    if (cl->GetFlag("-help","-h")) {
+    if (cl->GetFlag("-help","-h"))
+    {
         MessageBoxInf(
-            "Использование:"
-            "\nJoiner [-c=путь_к_файлу] [-du=my_user1 -dp=my_password1] [-su=my_user2 -sp=my_password2] "
+            "Using comand-line:"
+            "\nJoiner [-c=file_path] [-du=my_user1 -dp=my_password1] [-su=my_user2 -sp=my_password2] "
             "[-h]"
 
             "\n"
-            "\nПараметры:"
-            "\n-h | -help\tСправка о программе (это окно)"
-            "\n-i | -info\tИнформация об авторе программы"
+            "\nOptions:"
+            "\n-h | -help\tShow this help"
+            "\n-i | -info\tShow info about author"
             "\n"
-            "\n-c | -config = <путь_к_файлу>\tЗадает полный путь к файлу настройки импорта-экспорта"
+            "\n-c | -config = <file_path>\tSpecify path to the xml config file"
             "\n"
-            "\n-su | -srcuser\tИмя пользователя в БД источника"
-            "\n-sp | -srcpassword\tПароль доступа к БД источника"
-            "\n-du | -dstuser\tИмя пользователя в БД назначения"
-            "\n-dp | -dstpassword\tПароль доступа к БД назначения"
-            "\n-gp | -getpassword\tОтображает зашифрованные значения имени пользователя и пароля"
+            "\n-su | -srcuser\tSource Database Username in open text"
+            "\n-sp | -srcpassword\tSource Database Password in open text"
+            "\n-du | -dstuser\tDestination Database Username in open text"
+            "\n-dp | -dstpassword\tDestination Database Password in open text"
+            "\n-gp | -getpassword\tShow encoded value of password"
             "\n"
-            "\n-ac | -accesscode\tОтображает зашифрованные значения имени пользователя и пароля"
-            "\n-acp | -accesscodepersonal\tОтображает зашифрованные значения имени пользователя и пароля, с привязкой к пользователю"
-            "\n-acw | -accesscodeworkstation\tОтображает зашифрованные значения имени пользователя и пароля, с привязкой к рабочей станции"
+            "\n-ac | -accesscode\tОShow encoded value of username and password"
+            "\n-acp | -accesscodepersonal\tShow encoded value of username and password linked to OS user  (not realised)"
+            "\n-acw | -accesscodeworkstation\tShow encoded value of username and password linked to personal workstation (not realised)"
             "\n"
-            "\n-s | -silent\tТихий режим"
-            "\n-a | -auto\tАвтоматический режим запуска (не требуется с ключем -s)"
-            "\n-ae | -autoexit\tАвтоматический выход из программы после завершения (не требуется с ключем -s)"
-            "\n-l | -log = <путь_к_лог_файлу>\tЗадает путь к лог-файлу"
-            "\n-lr | -logrewrite \tПерезаписывать лог-файл"
+            "\n-s | -silent\tSilent mode"
+            "\n-a | -auto\tAuto start execute (not needs with -s/-silent option)"
+            "\n-ae | -autoexit\tAuto exit after execute (not needs with -s/-silent option)"
+            "\n-l | -log = <file_path>\tSpecify path to the log file"
+            "\n-lr | -logrewrite \tRewrite log file"
         );
         return 0;
     }
 
     // Выводим информацию об авторе, если требуется
-    if (cl->GetFlag("-info","-i")) {
+    if (cl->GetFlag("-info","-i"))
+    {
         MessageBoxInf(
-            "Программа для слияния файлов\nJoiner v." + AppVer::Version + " (" + AppVer::Build + ")"
+            "Program for merging files\nJoiner v." + AppVer::Version + " (" + AppVer::Build + ")"
             "\n"
-            "\nCopyright © 2014-2016"
+            "\nCopyright © 2014-2018"
             "\n"
-            "\nЦентральный филиал ОАО \"Челябэнергосбыт\""
+            "\nWelcome to GitHub repository of this project: https://github.com/uralx74/Joiner"
             "\n"
-            "\nАвтор: Инженер-программист Отдела ИТ"
-            "\nЦентрального филиала ОАО \"Челябэнергосбыт\""
-            "\nВ.С.Овчинников"
+            "\nAuthor:"
+            "\nVictor Ovchinnikov"
             "\n"
             "\n e-mail: x74@list.ru"
+            "\n skype: uralx74"
+            "\n icq: 217-056-065"
         );
         return 0;
     }
 
     // Выполняем в тихом режиме, если задан ключ
-    if (cl->GetFlag("-silent","-s")) {
-        CoInitialize(NULL);     // COM libruary initialize
+    if (cl->GetFlag("-silent","-s"))
+    {
+        CoInitialize(NULL);     // COM libruary initialize. Надо для работы Word и Excel
         TTransferModule TransferModule;
         TransferModule.Start();
         CoUninitialize();
@@ -117,11 +120,11 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         Application->Initialize();
         Application->CreateForm(__classid(TForm1), &Form1);
          Application->Run();
-        Logger->WriteLog("Программа завершена.");
+        Logger->WriteLog("The program is closed.");
     }
     catch (Exception &exception)
     {
-        Logger->WriteLog("Программа завершена с ошибкой. " + exception.Message);
+        Logger->WriteLog("The program is aborted with error." + exception.Message);
         Application->ShowException(&exception);
     }
     return 0;

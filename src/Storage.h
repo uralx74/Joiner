@@ -21,6 +21,8 @@ public:
     bool enable;        // Признак того, необходимо ли вообще учитывать это поле (если false, поле не создается)
     String name;    // Имя поля (до 10 символов).
     String name_src;    // Имя поля из копируемой БД
+    String value;   // Значение
+    bool forceValue;
 
 //private:
     bool required;      // Признак обязательности наличия сопоставленного поля в источнике
@@ -41,6 +43,9 @@ public:
     bool Truncate;
     int retry_count;
     int retry_interval;
+    String InitProcName;    // Имя инициализирующей процедуры (запускается во время Open)
+    String FinalProcName;    // Имя финализирующей процедуры (запускается во время Commit)
+
 };
 
 

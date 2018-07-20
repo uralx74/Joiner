@@ -17,10 +17,10 @@ class TOraField : public TStorageField {
 class TStorageTableOra : public TStorageTable
 {
 public:
-    AnsiString Table;       // Имя таблицы (используется если нужно предварительно очистить)
-    AnsiString Server;
-    AnsiString Username;
-    AnsiString Password;
+    String Table;       // Имя таблицы (используется если нужно предварительно очистить)
+    String Server;
+    String Username;
+    String Password;
 };
 
 
@@ -28,14 +28,14 @@ public:
 class TOraProcTable : public TStorageTableOra
 {
 public:
-    AnsiString Procedure;   // Имя процедуры
+    String Procedure;   // Имя процедуры
 };
 
 // Структура для хранения параметров
 class TOraSqlTable : public TStorageTableOra
 {
 public:
-    AnsiString Sql;     // Имя файла с Sql-запросом
+    String Sql;     // Имя файла с Sql-запросом
 };
 
 
@@ -57,6 +57,7 @@ protected:
     TOraSession* dbSession;
     TOraQuery* dbQuery;
     void truncateTable(TStorageTableOra* Table);
+    void executeProc(const String& procName);      // Добавлена для initProc и finalProc
     void prepareQuery();
 
 
@@ -74,6 +75,7 @@ public:
     void openTable(bool ReadOnly = true);
     void setFieldValue(Variant Value);
     void post();
+    void commit();
     void nextField();
     virtual TOraField* addField();
     void addTable(const TOraProcTable& Table);

@@ -5,7 +5,7 @@
 #include <vector>
 #include "Storage.h"
 
-#include "MSExcelWorks.h"
+#include "ExcelUtil.h"
 
 
 class TStorageExcel;

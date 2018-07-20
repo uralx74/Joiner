@@ -49,7 +49,9 @@ void TStorageOra::openConnection(AnsiString Server, AnsiString Username, AnsiStr
         dbSession->AutoCommit = false;
         dbSession->DataTypeMap->Clear();
         dbSession->Connect();
-    } catch (Exception& e) {
+    }
+    catch (Exception& e)
+    {
         delete dbSession;
         dbSession = NULL;
         throw Exception("Can't connect to server \"" + Server + "\". " + Trim(e.Message) );
@@ -92,19 +94,23 @@ void TStorageOra::openConnection(AnsiString Server, AnsiString Username, AnsiStr
 //
 void TStorageOra::closeTable()
 {
-    if (Active) {
-        if (dbQuery->Active) {
+    if (Active)
+    {
+        if (dbQuery->Active)
+        {
             dbQuery->Close();
         }
         dbSession->Close();
     }
 
-    if (dbQuery != NULL) {
+    if (dbQuery != NULL)
+    {
         delete dbQuery;
         dbQuery = NULL;
     }
 
-    if (dbSession != NULL) {
+    if (dbSession != NULL)
+    {
         delete dbSession;
         dbSession = NULL;
     }
@@ -123,13 +129,19 @@ TStorageOra::~TStorageOra()
 //
 void TStorageOra::prepareQuery()
 {
-    try {
+    try
+    {
    	    dbQuery = new TOraQuery(NULL);
         dbQuery->Session = dbSession;
         dbQuery->FetchAll = true;
+        dbQuery->AutoCommit = false;
+
         //dbQuery->CachedUpdates = true;
         dbQuery->SQL->Clear();
-    } catch (...) {
+
+    }
+    catch (...)
+    {
         delete dbQuery;
         dbQuery = NULL;
         throw Exception("");
@@ -140,8 +152,10 @@ void TStorageOra::prepareQuery()
 // Очистка таблицы
 void TStorageOra::truncateTable(TStorageTableOra* Table)
 {
-    if (!ReadOnly && Table->Truncate && Table->Table != "") {
-        try {
+    if (!ReadOnly && Table->Truncate && Table->Table != "")
+    {
+        try
+        {
             //dbQuery->SQL->Add("delete from " + Table->Table);
             dbQuery->SQL->Add("truncate table " + Table->Table);
             dbQuery->ExecSQL();
@@ -151,10 +165,29 @@ void TStorageOra::truncateTable(TStorageTableOra* Table)
             dbQuery = NULL;
             throw Exception("Can't truncate table " + Table->Table + ".");
         }
-    } else {
+    }
+    else
+    {
         throw Exception("Can't truncate ReadOnly table .");
     }
 }
+
+/* Выполнение инициализирующей процедуры */
+void TStorageOra::executeProc(const String& procName)
+{
+    try
+    {
+        dbQuery->CreateProcCall(procName, 0);
+        dbQuery->ExecSQL();
+    }
+    catch(Exception &e)
+    {
+        delete dbQuery;
+        dbQuery = NULL;
+        throw Exception("Procedure \"" + procName + "\" return exception message: \"" + e.Message + "\"");
+    }
+}
+
 
 //---------------------------------------------------------------------------
 // Создание принимающего OraQuery
@@ -164,20 +197,33 @@ void TStorageOraProc::openTable(bool ReadOnly)
 
     /*возможно воспользоваться TStorageOra::Open*/
 
-    if (Tables.size()>0) {
+    if (Tables.size()>0)
+    {
         openConnection(Tables[TableIndex].Server, Tables[TableIndex].Username, Tables[TableIndex].Password);
-    } else {
+    }
+    else
+    {
         throw Exception("Storage is not specified.");
     }
 
     prepareQuery();
-    if (ReadOnly == false) {
+
+    if(ReadOnly == false && Tables[TableIndex].InitProcName != "" )  // Выполняем инициализирующую процедуру если она задана
+    {
+        executeProc(Tables[TableIndex].InitProcName);
+    }
+
+    if (ReadOnly == false && Tables[TableIndex].Table != "" && Tables[TableIndex].Truncate == true)
+    {
         truncateTable(&Tables[TableIndex]);
     }
 
-    try {
+    try
+    {
  	    dbQuery->CreateProcCall(Tables[TableIndex].Procedure, 0);
-    } catch (...) {
+    }
+    catch (...)
+    {
         delete dbQuery;
         dbQuery = NULL;
         throw Exception("Can't create procedure call.");
@@ -192,11 +238,13 @@ void TStorageOraProc::openTable(bool ReadOnly)
 void TStorageOraProc::setFieldValue(Variant Value)
 {
     if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable)
+    {
         dbQuery->ParamByName(Fields[FieldIndex]->name)->Value = Value;
+    }
 }
 
 //---------------------------------------------------------------------------
-//
+// Выполнение процедуры
 void TStorageOraProc::post()
 {
     dbQuery->ExecSQL();
@@ -210,7 +258,8 @@ void TStorageOraProc::post()
 //
 void TStorageOraProc::nextField()
 {
-    if (!eof()) {
+    if (!eof())
+    {
         FieldIndex++;
     }
 }
@@ -321,7 +370,14 @@ void TStorageOraSql::openTable(bool ReadOnly)
     }
 
     prepareQuery();
-    if (ReadOnly == false && Tables[TableIndex].Truncate)
+
+    if(ReadOnly == false && Tables[TableIndex].InitProcName != "" )  // Выполняем инициализирующую процедуру если она задана
+    {
+        executeProc(Tables[TableIndex].InitProcName);
+    }
+
+
+    if (ReadOnly == false && Tables[TableIndex].Truncate)  // Очищаем таблицу
     {
         truncateTable(&Tables[TableIndex]);
     }
@@ -411,10 +467,10 @@ Variant TStorageOraSql::getFieldValue(TStorageField* Field)
 // Устанавливает значение активного поля
 void TStorageOraSql::setFieldValue(Variant Value)
 {
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable) {
-        //dbQuery->FieldByName("acct_id")->Value = Value;   // 2016-07-28
-        dbQuery->FieldByName(Fields[FieldIndex]->name)->Value = Value;   // 2016-07-28
+    if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable)
+    {
+        String name = Fields[FieldIndex]->name;
+        dbQuery->FieldByName(name)->Value = Value;   // 2016-07-28
     }
 }
 
@@ -428,24 +484,56 @@ void TStorageOraSql::append()
 
 //---------------------------------------------------------------------------
 // Фиксирует изменения
-void TStorageOraSql::commit()
+void TStorageOraProc::commit()
 {
-    if (ReadOnly) {
-        throw Exception("Can't commit the storage because it is read-only.");
-       //return;
+    if ( Modified )
+    {
+        try
+        {
+            dbSession->Commit();
+        }
+        catch (Exception &e)
+        {
+            throw Exception(e.Message);
+        }
     }
 
-    if (dbQuery->Modified) {
-        try {
+    if(ReadOnly == false && Tables[TableIndex].FinalProcName != "" )  // Выполняем финализирующую процедуру если она задана
+    {
+        executeProc(Tables[TableIndex].FinalProcName);
+    }
+}
+
+//---------------------------------------------------------------------------
+// Фиксирует изменения
+void TStorageOraSql::commit()
+{
+    if (ReadOnly)
+    {
+        throw Exception("Can't commit the storage because it is read-only.");
+    }
+
+    if ( dbQuery->Modified )
+    {
+        try
+        {
             dbQuery->Post();
             dbSession->Commit();
             Modified = true;
             RecordCount = dbQuery->RecordCount;
-        } catch (Exception &e) {
+        }
+        catch (Exception &e)
+        {
             //dbSession->Rollback();
             throw Exception(e.Message);
         }
     }
+
+    if(ReadOnly == false && Tables[TableIndex].FinalProcName != "" )  // Выполняем финализирующую процедуру если она задана
+    {
+        executeProc(Tables[TableIndex].FinalProcName);
+    }
+
     FieldIndex = 0;
 }
 

@@ -9,7 +9,9 @@
 
 
 TStorageField::TStorageField():
-    active(true)
+    active(true),
+    forceValue(false),
+    value("")
 {
 }
 
@@ -61,7 +63,8 @@ bool TStorage::linkSource(TStorage* Storage)
 {
     // Storage is Source storage
     int n = Fields.size();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         //String sss = this->Fields[i]->name_src;
         //bool k = Storage->FindField(this->Fields[i]->name_src);
         this->Fields[i]->linked = Storage->findField(Fields[i]->name_src) != NULL;
@@ -73,8 +76,10 @@ bool TStorage::linkSource(TStorage* Storage)
 TStorageField* TStorage::findField(AnsiString fieldName)
 {
     int n = Fields.size();
-    for (int i = 0; i < n; i++) {
-        if (UpperCase(Fields[i]->name) == UpperCase(fieldName)) {
+    for (int i = 0; i < n; i++)
+    {
+        if (UpperCase(Fields[i]->name) == UpperCase(fieldName))
+        {
             return Fields[i];
         }
     }

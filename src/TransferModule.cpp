@@ -45,27 +45,27 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
 {
     if (!Src || !Dst)
     {
-        Logger->WriteLog("Процедура копирования неможет быть запущена, так как " +
+        Logger->WriteLog("Процедура копирования не может быть запущена, так как " +
             ((String)(!Src? "источник" : "приемник")) + " не задан.");
         return;
     }
 
-    Logger->WriteLog("Процедура копирования данных запущена.");
+    Logger->WriteLog("Copying data started started.");
     TDateTime StartTime = Now();
 
 
     int log_n;
-    log_n = Logger->WriteLog("Открытие приемника >");
+    log_n = Logger->WriteLog("Opening Destination >");
     try
     {
         Dst->openTable(false);   // Открываем приемник
-        Logger->WriteLog("Приемник открыт успешно.", log_n);
+        Logger->WriteLog("Destination is opened successfully.", log_n);
     }
     catch (Exception &e)
     {
-        Logger->WriteLog("Не удалось открыть приемник \"" + Dst->getTable() + "\". " + e.Message, log_n);
+        Logger->WriteLog("Could not open the Destination \"" + Dst->getTable() + "\". " + e.Message, log_n);
         Dst->closeTable();
-        Logger->WriteLog("Процедура копирования данных завершена.");
+        Logger->WriteLog("The data copying procedure is complete.");
         return;
     }
 
@@ -87,18 +87,18 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
         {
             log_n = Logger->WriteLog("Открытие источника >");
             Src->openTable(true);   // Открываем источник
-            Logger->WriteLog("Источник открыт успешно.", log_n);
+            Logger->WriteLog("Source opened successfully.", log_n);
         }
         catch (Exception &e)
         {    // если ошибка, переходим на следующую таблицу
-            Logger->WriteLog("Не удалось открыть источник \"" + Src->getTable()+ "\" (" + Src->getTableStage() + "). " + e.Message, log_n);
+            Logger->WriteLog("Could not open Source \"" + Src->getTable()+ "\" (" + Src->getTableStage() + "). " + e.Message, log_n);
             Src->nextTable();
             continue;
         }
 
 
         // Если источник открыт успешно
-        log_n = Logger->WriteLog("Загружается > \"" + Src->getTable() + "\" (" + Src->getTableStage() + "; " + Src->getRecordStage()+")");
+        log_n = Logger->WriteLog("Processed > \"" + Src->getTable() + "\" (" + Src->getTableStage() + "; " + Src->getRecordStage()+")");
 
         try
         {
@@ -111,6 +111,7 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
             Dst->linkSource(Src);
 
             int DstRecordCount = Dst->getRecordCount();
+
             while(!Src->eor())    // Цикл по строкам
             {
                 //String sss = Src->getRecordStage();
@@ -126,18 +127,17 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
                 {
                     bool isLinkedField = Dst->isLinkedField();
                     bool isActiveField = Dst->isActiveField();
+                    TStorageField *field = Dst->getField();
                     if (isLinkedField && isActiveField)
                     {
                         Variant Value;
-
                         try
                         {
-                            TStorageField *field = Dst->getField();
                             Value = Src->getFieldValue(field);
                         }
                         catch (Exception &e)
                         {
-                            Logger->WriteLog("Ошибка в источнике \"" + Src->getTable() + "\" (" + Src->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
+                            Logger->WriteLog("Problem with Source \"" + Src->getTable() + "\" (" + Src->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
                             throw Exception("");
                         }
                         try
@@ -146,7 +146,22 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
                         }
                         catch (Exception &e)
                         {
-                            Logger->WriteLog("Ошибка в приемнике \"" + Dst->getTable() + "\" (" + Dst->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
+                            Logger->WriteLog("Problem with Destination \"" + Dst->getTable() + "\" (" + Dst->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
+                            throw Exception("");
+                        }
+                    }
+                    else if (isActiveField && field->forceValue)
+                    {
+                        Variant Value;
+                        Value = field->value;
+
+                        try
+                        {
+                            Dst->setFieldValue(Value);
+                        }
+                        catch (Exception &e)
+                        {
+                            Logger->WriteLog("Problem with Destination \"" + Dst->getTable() + "\" (" + Dst->getTableStage() + ")" + ". " + e.Message /*+ Dst->GetSrcField()*/, log_n);
                             throw Exception("");
                         }
                     }
@@ -161,15 +176,19 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
 
                 Dst->post();  // Фиксирует строку
                 Src->nextRecord();
+                //log_n = Logger->WriteLog(Src->getRecordIndex());
             }
 
+            // Если источник открыт успешно
+            //log_n = Logger->WriteLog("Фиксация >");
             Dst->commit();
+
 
             // Проверять, был ли хоть один Commit в приемнике
             // может быть использовать RecordIndex или RecordCount
             int LoadedRecordsCount = Dst->getRecordCount() - DstRecordCount;
 
-            Logger->WriteLog("Загружено " + IntToStr(LoadedRecordsCount) + " записей из \"" + Src->getTable() + "\"", log_n);
+            Logger->WriteLog("Loaded " + IntToStr(LoadedRecordsCount) + " recors of \"" + Src->getTable() + "\"", log_n);
             DstRecordCount = Dst->getRecordCount();
 
         }
@@ -177,7 +196,7 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
         {
             if (e.Message != "")
             {
-                Logger->WriteLog("Непредвиденая ошибка. Источник: \"" + Src->getTable() + "\" (" + Src->getTableStage() + "), приемник \"" + Dst->getTable()+ "\". " + e.Message /*+ Dst->GetSrcField()*/);
+                Logger->WriteLog("Unexpected error. Source: \"" + Src->getTable() + "\" (" + Src->getTableStage() + "), Destination \"" + Dst->getTable()+ "\". " + e.Message /*+ Dst->GetSrcField()*/);
             }
         }
         Src->nextTable();
@@ -189,14 +208,14 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
     int hh = (TotalSec ) / 3600;
     int mm = (TotalSec - hh * 3600) / 60;
     int ss = TotalSec % 60;
-    AnsiString sTotalTime = IntToStr(ss) + " сек";
+    AnsiString sTotalTime = IntToStr(ss) + " sec";
     if (mm > 0)
     {
-        sTotalTime = IntToStr(mm) + " мин " + sTotalTime;
+        sTotalTime = IntToStr(mm) + " min " + sTotalTime;
     }
     if (hh > 0)
     {
-        sTotalTime = IntToStr(hh) + " час " + sTotalTime;
+        sTotalTime = IntToStr(hh) + " hour " + sTotalTime;
     }
 
 
@@ -206,12 +225,12 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
     // может быть использовать RecordIndex или RecordCount
     if (Dst->isModified())
     {
-        Logger->WriteLog("Всего загружено " + IntToStr(DstRecordCountTotal) + " записей за " + sTotalTime+ ".");
+        Logger->WriteLog("Total loaded " + IntToStr(DstRecordCountTotal) + " records for " + sTotalTime+ ".");
         Logger->WriteLog("Результат сохранен в \"" + Dst->getTable() + "\".");
     }
     else
     {
-        Logger->WriteLog("Приемник не был изменен. Всего затрачено времени на процесс: " + sTotalTime+ ".");
+        Logger->WriteLog("The Destination was not changed. Total time spent on the process: " + sTotalTime+ ".");
     }
 
     // Закрытие источника и приемника
@@ -220,7 +239,7 @@ void __fastcall TTransferModule::Transfer(TStorage* Src, TStorage* Dst)
     Src->closeTable();
     Dst->closeTable();
 
-    Logger->WriteLog("Процедура копирования данных завершена.");
+    Logger->WriteLog("The data copying procedure is complete.");
 }
 
 

@@ -6,7 +6,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "dbf"
-#pragma link "dbf"
 #pragma link "DBAccess"
 #pragma link "MemDS"
 #pragma link "DBAccess"
@@ -36,14 +35,16 @@ void TForm1::ShowCode(int ScopeType)
 
         TEncoder encoder;
 
-        if (clSrcUsername != "" && clSrcPassword != "") {
-            AnsiString Code = encoder.Encode(clSrcUsername, clSrcPassword, ScopeType);
-            Logger->WriteLog("Вставьте в настройки источника: code=\"" +  XmlUtil::XmlEncode(Code) + "\"");
+        if (clSrcUsername != "" && clSrcPassword != "")
+        {
+            String Code = encoder.Encode(clSrcUsername, clSrcPassword, ScopeType);
+            Logger->WriteLog("Insert for source settings: code=\"" +  XmlUtil::XmlEncode(Code) + "\"");
         }
 
-        if (clDstUsername != "" && clDstPassword != "") {
-            AnsiString Code = encoder.Encode(clDstUsername, clDstPassword, ScopeType);
-            Logger->WriteLog("Вставьте в настройки приемника: code=\"" +  XmlUtil::XmlEncode(Code) + "\"");
+        if (clDstUsername != "" && clDstPassword != "")
+        {
+            String Code = encoder.Encode(clDstUsername, clDstPassword, ScopeType);
+            Logger->WriteLog("Insert for destination settings: code=\"" +  XmlUtil::XmlEncode(Code) + "\"");
         }
     }
 }
@@ -69,15 +70,16 @@ void __fastcall TForm1::OpenConfigButtonClick(TObject *Sender)
     // Опции окна сохранения результов
     OpenDialog1->Options.Clear();
     OpenDialog1->Options << ofFileMustExist;
-    OpenDialog1->Filter = "XML-файлы (*.xml)|*.xml|Все файлы (*.*)|*.*";
+    OpenDialog1->Filter = "XML-files (*.xml)|*.xml|All files (*.*)|*.*";
     OpenDialog1->FilterIndex = 1;
     //OpenDialog1->DefaultExt = "xlsx";
 
     AnsiString filename;
-    if (OpenDialog1->Execute()) {
+    if (OpenDialog1->Execute())
+    {
         TCommandLine* CommandLine = &TCommandLine::getInstance();
         CommandLine->SetValue("-config", "-c", OpenDialog1->FileName);
-        Logger->WriteLog("Пользователем выбран файл конфигурации \"" +  OpenDialog1->FileName + "\"");
+        Logger->WriteLog("User has selected the configuration file \"" +  OpenDialog1->FileName + "\"");
         UpdateInterface();
     }
 
@@ -104,10 +106,10 @@ void __fastcall TForm1::ExitButtonClick(TObject *Sender)
 {
     if (pTransferThread != NULL)
     {
-        if (MessageBoxQuestion("Поток копирования данных активен. Вы уверены, что хотите прервать и закрыть программу?"))
+        if (MessageBoxQuestion("Data copy thread is active. Do you sure to abort it and close the program?"))
         {
             // Прерываем поток, ждем его завершения
-            Logger->WriteLog("Активировано принудительное завершение потока копирования данных.");
+            Logger->WriteLog("Enforced the forced completion of the data copy thread.");
             pTransferThread->Terminate(); // Не реализовано!
             pTransferThread->WaitFor();
             //WaitForSingleObject((HANDLE)pTransferThread->Handle, INFINITE);
@@ -133,13 +135,14 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
     Logger->AddConsole(LogRichEdit);    // Добавляем консоль, для вывода лог-сообщений
 
     UpdateInterface();
- 
+
     // Если пользователь запросил сформировать код доступа для вставки в конфигурационный файл
     int ScopeType = CommandLine->GetFlag("-ac", "-accesscode")? 0 : -1;
     ScopeType = ScopeType == -1 && CommandLine->GetFlag("-acp", "-accesscodepersonal")? 1 : ScopeType;
-    ScopeType = ScopeType == -1 && CommandLine->GetFlag("-acw", "--accesscodeworkstation")? 2 : ScopeType;
+    ScopeType = ScopeType == -1 && CommandLine->GetFlag("-acw", "-accesscodeworkstation")? 2 : ScopeType;
 
-    if (ScopeType > -1) {
+    if (ScopeType > -1)
+    {
         ShowCode(ScopeType);
     }
 }
@@ -148,9 +151,17 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
 //
 void __fastcall TForm1::FormActivate(TObject *Sender)
 {
+    bool bConfig = CommandLine->GetFlag("-c", "-config");
+    bool bAutoExecute = CommandLine->GetFlag("-a", "-auto");
+    if (bConfig)
+    {
+        Logger->WriteLog("Config file selected \"" + CommandLine->GetValue("-config", "-c") + "\"");
+    }
+
     // Если был использован ключ -a -auto
-    if (CommandLine->GetFlag("-a", "-auto") && CommandLine->GetFlag("-c", "-config")) {
-        Logger->WriteLog("Активирован автоматический запуск");
+    if (bAutoExecute && bConfig)
+    {
+        Logger->WriteLog("Auto start execution is activated");
         StartTransfer();
     }
 }
@@ -173,8 +184,10 @@ void TForm1::StartTransfer()
 // Таймер, отслеживающий завершение потока
 void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
-    if (pTransferThread != NULL) {
-        if (WaitForSingleObject((HANDLE)pTransferThread->Handle, 0) == WAIT_OBJECT_0) {
+    if (pTransferThread != NULL)
+    {
+        if (WaitForSingleObject((HANDLE)pTransferThread->Handle, 0) == WAIT_OBJECT_0)
+        {
             pTransferThread->Free();
             pTransferThread = NULL;
 
@@ -187,7 +200,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
             {
                 this->Close();
             }
-            
+
             UpdateInterface();
         }
     }

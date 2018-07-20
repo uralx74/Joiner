@@ -2,7 +2,7 @@
 #ifndef TransferModuleH
 #define TransferModuleH
 
-#include "c:\_PROGRS\current\util\taskutils.h"
+#include "..\util\taskutils.h"
 //#include "c:\PROGRS\current\util\appver.h"
 #include "CommandLine.h"
 #include <ComCtrls.hpp>

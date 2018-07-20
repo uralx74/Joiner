@@ -28,9 +28,10 @@ void TStorageSqlText::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
    
-    AnsiString templateFileName = Tables[TableIndex].Template;
+    String templateFileName = Tables[TableIndex].Template;
     if (templateFileName != "") {
-        if (!FileExists(templateFileName)) {
+        if (!FileExists(templateFileName))
+        {
             throw Exception("File not found " + templateFileName + ".");
         }
         TStringList* pStringList;
@@ -39,7 +40,9 @@ void TStorageSqlText::openTable(bool ReadOnly)
         pStringList->LoadFromFile(templateFileName);
         SqlText = pStringList->Text;
         pStringList->Free();
-    } else {
+    }
+    else
+    {
         throw Exception("File not found.");
     }
 }

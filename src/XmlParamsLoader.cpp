@@ -76,11 +76,11 @@ bool __fastcall TXmlLoader::LoadParameters()
     clConfig = ExpandFileName(clConfig);
     clConfigPath = ExtractFilePath(clConfig);
 
-    int LogLine = Logger->WriteLog("Загрузка файла конфигурации > " + clConfig);
+    int LogLine = Logger->WriteLog("Loading the configuration file > " + clConfig);
 
     if (!FileExists(clConfig))
     {
-        Logger->WriteLog("Ошибка. Файл конфигурации не найден " + clConfig);
+        Logger->WriteLog("Error. Specified configuration file not found > " + clConfig);
         return false;
     }
 
@@ -90,7 +90,7 @@ bool __fastcall TXmlLoader::LoadParameters()
 
     if (msxml.GetParseError() != "")
     {
-        Logger->WriteLog("Ошибка: " + msxml.GetParseError());
+        Logger->WriteLog("Xml Error: " + msxml.GetParseError());
         return false;
     }
 
@@ -155,7 +155,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                                 }
                                 catch (...)
                                 {
-                                    Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
+                                    Logger->WriteLog("Error. Failed to decrypt password to source \"" + Table.Server + "\"");
                                     return false;
                                 }
                             }
@@ -228,7 +228,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                     }
                     catch (Exception &e)
                     {
-                        Logger->WriteLog("Ошибка. Не удалось загрузить шаблон из файла " + xmlTemplate + ".");
+                        Logger->WriteLog("Error. Could not load template from file " + xmlTemplate + ".");
                         throw Exception("");
                     }
                 }
@@ -298,7 +298,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                         }
                         catch (...)
                         {
-                            Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
+                            Logger->WriteLog("Error. Failed to decrypt password to Source \"" + Table.Server + "\"");
                             return false;
                         }
                     }
@@ -311,6 +311,8 @@ bool __fastcall TXmlLoader::LoadParameters()
 
                 Table.Procedure = msxml.GetAttributeValue(subnode, "procedure");
                 Table.Table = msxml.GetAttributeValue(subnode, "table");
+                Table.InitProcName = msxml.GetAttributeValue(subnode, "initproc");
+                Table.FinalProcName = msxml.GetAttributeValue(subnode, "finalproc");
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
                 Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
                 Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
@@ -330,6 +332,14 @@ bool __fastcall TXmlLoader::LoadParameters()
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
                             field->name_src = LowerCase(msxml.GetAttributeValue(node_fields, "name_src", field->name));
+                            Variant attribute = msxml.GetAttribute(node_fields, "value");
+                            if (!attribute.IsEmpty())
+                            {
+                                field->forceValue = true;
+                                field->value = msxml.GetAttributeValue(node_fields, "value");
+                            }
+
+                            //GetAttributeValue(node_fields, "value");
                             //field->name_src = field->name_src == "" ? "" : field->name;
                             //field->name_src = field->name;
                         }
@@ -366,7 +376,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                         }
                         catch (...)
                         {
-                            Logger->WriteLog("Ошибка. Не удалось расшифровать пароль к источнику \"" + Table.Server + "\"");
+                            Logger->WriteLog("Error. Failed to decrypt password to source\"" + Table.Server + "\"");
                             return false;
                         }
                     }
@@ -379,6 +389,8 @@ bool __fastcall TXmlLoader::LoadParameters()
 
                 Table.Sql = ""; // Важно!
                 Table.Table = msxml.GetAttributeValue(subnode, "table");
+                Table.InitProcName = msxml.GetAttributeValue(subnode, "initproc");
+                Table.FinalProcName = msxml.GetAttributeValue(subnode, "finalproc");
                 Table.Truncate = msxml.GetAttributeValue(subnode, "truncate", false);
                 Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
                 Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
@@ -396,6 +408,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                             field->active = msxml.GetAttributeValue(node_fields, "active", true);
                             field->enable = msxml.GetAttributeValue(node_fields, "enable", true);
                             field->name_src = LowerCase(msxml.GetAttributeValue(node_fields, "name_src", field->name));
+                            //field->value = msxml.GetAttributeValue(node_fields, "value");
                         }
                     }
                     node_fields = msxml.GetNextNode(node_fields);
@@ -478,7 +491,7 @@ bool __fastcall TXmlLoader::LoadParameters()
         node = msxml.GetNextNode(node);
     }
 
-    Logger->WriteLog("Файл конфигурации загружен", LogLine);
+    Logger->WriteLog("Configuration file loaded", LogLine);
     return true;
 
 }            

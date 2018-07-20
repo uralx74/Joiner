@@ -15,7 +15,7 @@
 #include <ExtCtrls.hpp>
 #include <Menus.hpp>
 #include <StdCtrls.hpp>
-#include "c:\_PROGRS\current\util\appver.h"
+#include "appver.h"
 #include "DBAccess.hpp"
 #include "MemDS.hpp"
 #include "Ora.hpp"

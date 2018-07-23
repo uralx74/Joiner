@@ -110,8 +110,11 @@ void __fastcall TForm1::ExitButtonClick(TObject *Sender)
         {
             // Прерываем поток, ждем его завершения
             Logger->WriteLog("Enforced the forced completion of the data copy thread.");
-            pTransferThread->Terminate(); // Не реализовано!
-            pTransferThread->WaitFor();
+            if (pTransferThread != NULL)
+            {
+                pTransferThread->Terminate(); // Не реализовано!
+                pTransferThread->WaitFor();
+            }
             //WaitForSingleObject((HANDLE)pTransferThread->Handle, INFINITE);
         }
         else

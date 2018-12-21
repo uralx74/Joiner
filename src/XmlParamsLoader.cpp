@@ -46,23 +46,23 @@ AnsiString TXmlLoader::ExpandFileNameCustom(AnsiString FileName, AnsiString File
 }
 
 //---------------------------------------------------------------------------
-// Çàãðóæàåò ïàðàìåòðû èç êîìàíäíîé ñòðîêè
-// è ôàéëà êîíôèãóðàöèè
+// Ð—Ð°Ð³Ñ€ÑƒÐ¶Ð°ÐµÑ‚ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¸Ð· ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸
+// Ð¸ Ñ„Ð°Ð¹Ð»Ð° ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¸
 bool __fastcall TXmlLoader::LoadParameters()
 {
 
 // !!!!!!!!!!!!
-// Âîçìîæíî âìåñòî ExpandFilename ëó÷øå èñïîëüçîâàòü ïóòü îò xml-ôàéëà êîíôèãóðàöèè.
+// Ð’Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð²Ð¼ÐµÑÑ‚Ð¾ ExpandFilename Ð»ÑƒÑ‡ÑˆÐµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð¿ÑƒÑ‚ÑŒ Ð¾Ñ‚ xml-Ñ„Ð°Ð¹Ð»Ð° ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¸.
 
 
-    // Ïàðàìåòðû êîìàíäíîé ñòðîêè
-    AnsiString clConfig;    // Ïóòü ê ôàéëó êîíôèãóðàöèè
-    AnsiString clConfigPath;    // Ïóòü ê ôàéëó êîíôèãóðàöèè
+    // ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸
+    AnsiString clConfig;    // ÐŸÑƒÑ‚ÑŒ Ðº Ñ„Ð°Ð¹Ð»Ñƒ ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¸
+    AnsiString clConfigPath;    // ÐŸÑƒÑ‚ÑŒ Ðº Ñ„Ð°Ð¹Ð»Ñƒ ÐºÐ¾Ð½Ñ„Ð¸Ð³ÑƒÑ€Ð°Ñ†Ð¸Ð¸
 
-    AnsiString clSrcUsername;  // Èìÿ ïîëüçîâàòåëÿ áàçû äàííûõ
-    AnsiString clSrcPassword;  // Ïàðîëü ê áàçå äàííûõ
-    AnsiString clDstUsername;  // Èìÿ ïîëüçîâàòåëÿ áàçû äàííûõ
-    AnsiString clDstPassword;  // Ïàðîëü ê áàçå äàííûõ
+    AnsiString clSrcUsername;  // Ð˜Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+    AnsiString clSrcPassword;  // ÐŸÐ°Ñ€Ð¾Ð»ÑŒ Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+    AnsiString clDstUsername;  // Ð˜Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+    AnsiString clDstPassword;  // ÐŸÐ°Ñ€Ð¾Ð»ÑŒ Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ…
 
     clConfig = CommandLine->GetValue("-config","-c");
     clDstUsername = CommandLine->GetValue("-dstuser","-du");
@@ -72,7 +72,7 @@ bool __fastcall TXmlLoader::LoadParameters()
     //clLogfile = CommandLine->GetValue("-logfile","-l");
     //clSilent = CommandLine->GetValue("-silent","-s");
 
-    // Ïðåîáðàçîâûâàåì îòíîñèòåëüíûé ïóòü ê ôàéëó â àáñîëþòíûé ïóòü
+    // ÐŸÑ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ñ‹Ð²Ð°ÐµÐ¼ Ð¾Ñ‚Ð½Ð¾ÑÐ¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¿ÑƒÑ‚ÑŒ Ðº Ñ„Ð°Ð¹Ð»Ñƒ Ð² Ð°Ð±ÑÐ¾Ð»ÑŽÑ‚Ð½Ñ‹Ð¹ Ð¿ÑƒÑ‚ÑŒ
     clConfig = ExpandFileName(clConfig);
     clConfigPath = ExtractFilePath(clConfig);
 
@@ -114,7 +114,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                     if (msxml.GetNodeName(subnode) == "dbase4")
                     {
                         TDbaseTable Table;
-                        Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Èìÿ ôàéëà ìîæåò áûòü çàäàíî ìàñêîé
+                        Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Ð˜Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð° Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð¼Ð°ÑÐºÐ¾Ð¹
                         StorDbase->addTable(Table);
                     }
                     subnode = msxml.GetNextNode(subnode);
@@ -134,10 +134,10 @@ bool __fastcall TXmlLoader::LoadParameters()
                         Table.retry_count = msxml.GetAttributeValue(subnode, "retry_count", 1);
                         Table.retry_interval = msxml.GetAttributeValue(subnode, "retry_interval", 10);
 
-                        // Â äàëüíåéøåì ïåðåäåëàòü. 1. Êîìàíäíàÿ ñòðîêà ïðèîðèòåòíåé; 2. Øèôðîâàíèå-äåøèôðîâàíèå
-                        // Òîæå ñàìîå â OraProc è â ïðèåìíèê
+                        // Ð’ Ð´Ð°Ð»ÑŒÐ½ÐµÐ¹ÑˆÐµÐ¼ Ð¿ÐµÑ€ÐµÐ´ÐµÐ»Ð°Ñ‚ÑŒ. 1. ÐšÐ¾Ð¼Ð°Ð½Ð´Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ° Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚Ð½ÐµÐ¹; 2. Ð¨Ð¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ-Ð´ÐµÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
+                        // Ð¢Ð¾Ð¶Ðµ ÑÐ°Ð¼Ð¾Ðµ Ð² OraProc Ð¸ Ð² Ð¿Ñ€Ð¸ÐµÐ¼Ð½Ð¸Ðº
 
-                        // Åñëè çàäàíî èìÿ ïîëüçîâàòåëÿ è ïàðîëü â êîìàíäíîé ñòðîêå
+                        // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð¸ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð² ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐµ
                         if (clSrcUsername != "" || clSrcPassword != "")
                         {
                             Table.Username = clSrcUsername;
@@ -160,7 +160,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                                 }
                             }
                             else
-                            {    // Åñëè çàäàíî íå çàøèôðîâàííîå çíà÷åíèå
+                            {    // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð½Ðµ Ð·Ð°ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
                                 Table.Username = msxml.GetAttributeValue(subnode, "username");
                                 Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                             }
@@ -189,7 +189,10 @@ bool __fastcall TXmlLoader::LoadParameters()
                     if (msxml.GetNodeName(subnode) == "excel")
                     {
                         TExcelTable Table;
-                        Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Èìÿ ôàéëà ìîæåò áûòü çàäàíî ìàñêîé
+                        Table.File = ExpandFileNameCustom(msxml.GetAttributeValue(subnode, "file"), clConfigPath);  // Ð˜Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð° Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð¼Ð°ÑÐºÐ¾Ð¹
+                        Table.WorksheetIndex = msxml.GetAttributeValue(subnode, "worksheet", 1);  // Ð˜Ð½Ð´ÐµÐºÑ Ð»Ð¸ÑÑ‚Ð° Ñ Ñ‚Ð°Ð±Ð»Ð¸Ñ†ÐµÐ¹
+                        Table.TitleRowIndex = msxml.GetAttributeValue(subnode, "first_row", 1);  // ÐŸÐµÑ€Ð²Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ° = Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹
+                        Table.LastDataRowIndex = msxml.GetAttributeValue(subnode, "last_row", 0);  // ÐŸÐ¾ÑÐ»ÐµÐ´Ð½ÑÑ ÑÑ‚Ñ€Ð¾ÐºÐ° = Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑÑ Ð·Ð°Ð¿Ð¸ÑÑŒ
                         StorageExcel->addTable(Table);
                     }
                     subnode = msxml.GetNextNode(subnode);
@@ -221,7 +224,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                 //StorDbase->AddTemplate(xmlTemplate);
 
                 if (xmlTemplate != "")
-                {    // Åñëè çàäàí ïóòü ê øàáëîíó
+                {    // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½ Ð¿ÑƒÑ‚ÑŒ Ðº ÑˆÐ°Ð±Ð»Ð¾Ð½Ñƒ
                     try
                     {
                         StorDbase->setTemplate(new TStorageDbase(ExpandFileNameCustom(xmlTemplate, clConfigPath)), true);
@@ -234,27 +237,27 @@ bool __fastcall TXmlLoader::LoadParameters()
                 }
                 else if (xmlSourceAsTemplate)
                 {
-                    // íóæíî ëè çàêðûâàòü ïîñëå èñïîëüçîâàíèÿ?
-                    // êàê ïîëó÷èòü ñïèñîê ïîëåé íå ìåíÿÿ ïîëîæåíèå óêàçàòåëÿ íà çàïèñü, òàáëèöó, èñòî÷íèê?
+                    // Ð½ÑƒÐ¶Ð½Ð¾ Ð»Ð¸ Ð·Ð°ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¿Ð¾ÑÐ»Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ?
+                    // ÐºÐ°Ðº Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¿Ð¾Ð»ÐµÐ¹ Ð½Ðµ Ð¼ÐµÐ½ÑÑ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»Ñ Ð½Ð° Ð·Ð°Ð¿Ð¸ÑÑŒ, Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ, Ð¸ÑÑ‚Ð¾Ñ‡Ð½Ð¸Ðº?
                     StorDbase->setTemplate(SrcStor);
 
                 }
                 else
                 {
 
-                    // Çäåñü âîçìîæíî òîæå ñîçäàâàòü TStorage è äîáàâëÿòü â íåãî ïîëÿ ?
+                    // Ð—Ð´ÐµÑÑŒ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ñ‚Ð¾Ð¶Ðµ ÑÐ¾Ð·Ð´Ð°Ð²Ð°Ñ‚ÑŒ TStorage Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ð² Ð½ÐµÐ³Ð¾ Ð¿Ð¾Ð»Ñ ?
                     Variant node_fields = msxml.GetFirstNode(subnode);
 
                     while ( !VarIsClear(node_fields))
                     {
                         if (msxml.GetNodeName(node_fields) == "field")
                         {
-                            // Âîçìîæíî ïåðåäåëàòü íà àáñòðàêòíóþ ôàáðèêó èëè äð.
-                            // à òàêæå ïîçàáîòèòüñÿ îá óäàëåíèè îáüåêòà
+                            // Ð’Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð¿ÐµÑ€ÐµÐ´ÐµÐ»Ð°Ñ‚ÑŒ Ð½Ð° Ð°Ð±ÑÑ‚Ñ€Ð°ÐºÑ‚Ð½ÑƒÑŽ Ñ„Ð°Ð±Ñ€Ð¸ÐºÑƒ Ð¸Ð»Ð¸ Ð´Ñ€.
+                            // Ð° Ñ‚Ð°ÐºÐ¶Ðµ Ð¿Ð¾Ð·Ð°Ð±Ð¾Ñ‚Ð¸Ñ‚ÑŒÑÑ Ð¾Ð± ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ð¸ Ð¾Ð±ÑŒÐµÐºÑ‚Ð°
                             TDbaseField* dbaseField = StorDbase->addField();
                             if (dbaseField != NULL)
                             {
-                                // Ñîçäàòü ôóíêöèþ äëÿ óñòàíîâêè çíà÷åíèé
+                                // Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹
                                 dbaseField->type = LowerCase(msxml.GetAttributeValue(node_fields, "type", String("C")))[1];
                                 dbaseField->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
                                 dbaseField->length = msxml.GetAttributeValue(node_fields, "length", 0);
@@ -279,8 +282,8 @@ bool __fastcall TXmlLoader::LoadParameters()
                 TOraProcTable Table;
                 Table.Server = msxml.GetAttributeValue(subnode, "server");
 
-                //!!! Ôðàãìåíò äóáëèðóåòñÿ - íåîáõîäèì ðåôàêòîðèíã!
-                // Åñëè çàäàíî èìÿ ïîëüçîâàòåëÿ è ïàðîëü â êîìàíäíîé ñòðîêå
+                //!!! Ð¤Ñ€Ð°Ð³Ð¼ÐµÐ½Ñ‚ Ð´ÑƒÐ±Ð»Ð¸Ñ€ÑƒÐµÑ‚ÑÑ - Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼ Ñ€ÐµÑ„Ð°ÐºÑ‚Ð¾Ñ€Ð¸Ð½Ð³!
+                // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð¸ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð² ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐµ
                 if (clSrcUsername != "" || clSrcPassword != "")
                 {
                     Table.Username = clSrcUsername;
@@ -303,7 +306,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                         }
                     }
                     else
-                    {    // Åñëè çàäàíî íå çàøèôðîâàííîå çíà÷åíèå
+                    {    // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð½Ðµ Ð·Ð°ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
                         Table.Username = msxml.GetAttributeValue(subnode, "username");
                         Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                     }
@@ -348,7 +351,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                 }
 
             } else if (sExportType == "oratable")
-            {   // Ïðèåìíèê - Òàáëèöà â ÁÄ Oracle
+            {   // ÐŸÑ€Ð¸ÐµÐ¼Ð½Ð¸Ðº - Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð² Ð‘Ð” Oracle
 
                 TStorageOraSql* StorOraTable = new TStorageOraSql();
                 DstStor = (TStorage*) StorOraTable;
@@ -358,7 +361,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                 Table.Server = msxml.GetAttributeValue(subnode, "server");
 
 
-                // Åñëè çàäàíî èìÿ ïîëüçîâàòåëÿ è ïàðîëü â êîìàíäíîé ñòðîêå
+                // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð¸ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ Ð² ÐºÐ¾Ð¼Ð°Ð½Ð´Ð½Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐµ
                 if (clSrcUsername != "" || clSrcPassword != "")
                 {
                     Table.Username = clSrcUsername;
@@ -381,13 +384,13 @@ bool __fastcall TXmlLoader::LoadParameters()
                         }
                     }
                     else
-                    {    // Åñëè çàäàíî íå çàøèôðîâàííîå çíà÷åíèå
+                    {    // Ð•ÑÐ»Ð¸ Ð·Ð°Ð´Ð°Ð½Ð¾ Ð½Ðµ Ð·Ð°ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
                         Table.Username = msxml.GetAttributeValue(subnode, "username");
                         Table.Password = msxml.GetAttributeValue(subnode, "password", clSrcPassword);
                     }
                 }
 
-                Table.Sql = ""; // Âàæíî!
+                Table.Sql = ""; // Ð’Ð°Ð¶Ð½Ð¾!
                 Table.Table = msxml.GetAttributeValue(subnode, "table");
                 Table.InitProcName = msxml.GetAttributeValue(subnode, "initproc");
                 Table.FinalProcName = msxml.GetAttributeValue(subnode, "finalproc");
@@ -401,7 +404,7 @@ bool __fastcall TXmlLoader::LoadParameters()
                 {
                     if (msxml.GetNodeName(node_fields) == "field")
                     {
-                        TOraField* field = StorOraTable->addField();      // Âîçìîæíî çàìåíèòü íà
+                        TOraField* field = StorOraTable->addField();      // Ð’Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð·Ð°Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð½Ð°
                         if (field != NULL)
                         {
                             field->name = LowerCase(msxml.GetAttributeValue(node_fields, "name"));
@@ -493,7 +496,4 @@ bool __fastcall TXmlLoader::LoadParameters()
 
     Logger->WriteLog("Configuration file loaded", LogLine);
     return true;
-
 }            
-
-

@@ -12,27 +12,31 @@ class TStorageExcel;
 
 
 //---------------------------------------------------------------------------
-// Структура для хранения полей в MS Excel
-class TExcelField : public TStorageField {    // Для описания структуры dbf-файла
+// РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїРѕР»РµР№ РІ MS Excel
+class TExcelField : public TStorageField {    // Р”Р»СЏ РѕРїРёСЃР°РЅРёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹ dbf-С„Р°Р№Р»Р°
 public:
-    String format;      // Формат ячейки в MS Excel
+    String format;      // Р¤РѕСЂРјР°С‚ СЏС‡РµР№РєРё РІ MS Excel
     //TExcelField(AnsiString Name, int Index);
 private:
     friend class TStorageExcel;
     int index;
 };
 
-// Структура для хранения параметров
+// РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ
 class TExcelTable : public TStorageTable
 {
 public:
     AnsiString File;
+    int WorksheetIndex;
+    int TitleRowIndex;
+    int LastDataRowIndex;
+    int FirstDataRowIndex;
 };
 
 //---------------------------------------------------------------------------
 // class TStorageExcel: TStorage
-// Класс объекта источника/приемника данных
-// Используется таблица, хранимая в файле MS Excel
+// РљР»Р°СЃСЃ РѕР±СЉРµРєС‚Р° РёСЃС‚РѕС‡РЅРёРєР°/РїСЂРёРµРјРЅРёРєР° РґР°РЅРЅС‹С…
+// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚Р°Р±Р»РёС†Р°, С…СЂР°РЅРёРјР°СЏ РІ С„Р°Р№Р»Рµ MS Excel
 //---------------------------------------------------------------------------
 
 class TStorageExcel: TStorage
@@ -69,14 +73,11 @@ public:
 
 private:
     copyFieldsToExcel(TStorage* storage);
-    std::vector<TExcelTable> Tables;    // Список полей для экспрта
+    std::vector<TExcelTable> Tables;    // РЎРїРёСЃРѕРє РїРѕР»РµР№ РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°
     MSExcelWorks* msexcel;
     Variant Worksheet;
     Variant Workbook;
-    Variant Range;
 };
-
-
 
 //---------------------------------------------------------------------------
 #endif

@@ -13,26 +13,25 @@ TStorageExcel::~TStorageExcel()
 }
 
 //---------------------------------------------------------------------------
-// Добавляет таблицу в список (имя файла, может быть задано маской)
+// Р”РѕР±Р°РІР»СЏРµС‚ С‚Р°Р±Р»РёС†Сѓ РІ СЃРїРёСЃРѕРє (РёРјСЏ С„Р°Р№Р»Р°, РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РґР°РЅРѕ РјР°СЃРєРѕР№)
 void TStorageExcel::addTable(const TExcelTable& Table)
 {
     TSearchRec SearchRec;
     FindFirst(Table.File, faAnyFile, SearchRec);
 
     if (SearchRec.Name != "")
-    {     // Если файл найден, то формируем новый элемент-Таблицу
+    {     // Р•СЃР»Рё С„Р°Р№Р» РЅР°Р№РґРµРЅ, С‚Рѕ С„РѕСЂРјРёСЂСѓРµРј РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚-РўР°Р±Р»РёС†Сѓ
         AnsiString FilePath = ExtractFilePath(Table.File);
         do
         {
-            TExcelTable NewTable;
+            TExcelTable NewTable(Table);
             NewTable.File = FilePath + SearchRec.Name;
-            NewTable.Truncate = Table.Truncate;
             Tables.push_back(NewTable);
             TableCount++;
         } while ( FindNext(SearchRec) == 0);
     }
     else
-    {    // Если файл не найден, добавляем таблицу как есть
+    {    // Р•СЃР»Рё С„Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ, РґРѕР±Р°РІР»СЏРµРј С‚Р°Р±Р»РёС†Сѓ РєР°Рє РµСЃС‚СЊ
         Tables.push_back(Table);
         TableCount++;
     }
@@ -40,12 +39,16 @@ void TStorageExcel::addTable(const TExcelTable& Table)
 }
 
 //---------------------------------------------------------------------------
-// Открытие таблицы
+// РћС‚РєСЂС‹С‚РёРµ С‚Р°Р±Р»РёС†С‹
 void TStorageExcel::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
+    if (Tables[TableIndex].TitleRowIndex == 0)
+    {
+        Tables[TableIndex].TitleRowIndex = 1;
+    }
 
-    // Продумать случаи открытия - создание пустого файла!!!!
+    // РџСЂРѕРґСѓРјР°С‚СЊ СЃР»СѓС‡Р°Рё РѕС‚РєСЂС‹С‚РёСЏ - СЃРѕР·РґР°РЅРёРµ РїСѓСЃС‚РѕРіРѕ С„Р°Р№Р»Р°!!!!
     msexcel = new MSExcelWorks();
     if (ReadOnly)
     {
@@ -55,7 +58,7 @@ void TStorageExcel::openTable(bool ReadOnly)
             {
                 msexcel->OpenApplication();
                 Workbook = msexcel->OpenDocument(Tables[TableIndex].File);
-                Worksheet = msexcel->GetSheet(Workbook, 1);
+                Worksheet = msexcel->GetSheet(Workbook, Tables[TableIndex].WorksheetIndex);
             }
             catch (Exception &e)
             {
@@ -67,7 +70,7 @@ void TStorageExcel::openTable(bool ReadOnly)
             throw Exception("File not found \"" + Tables[TableIndex].File + "\".");
         }
     } else
-    {  // Если открываем как приемник, то в любом случае создаем новый файл
+    {  // Р•СЃР»Рё РѕС‚РєСЂС‹РІР°РµРј РєР°Рє РїСЂРёРµРјРЅРёРє, С‚Рѕ РІ Р»СЋР±РѕРј СЃР»СѓС‡Р°Рµ СЃРѕР·РґР°РµРј РЅРѕРІС‹Р№ С„Р°Р№Р»
         if ( FileExists(Tables[TableIndex].File) )
         {
             try
@@ -89,7 +92,7 @@ void TStorageExcel::openTable(bool ReadOnly)
 
             for(int i = 0; i < Fields.size(); i++)
             {
-                AnsiString sCellValue = msexcel->ReadCell(Worksheet, 1, i+1);
+                AnsiString sCellValue = msexcel->ReadCell(Worksheet, Tables[TableIndex].TitleRowIndex, i+1);
                 if (Fields[i]->name != sCellValue)
                 {
                     closeTable();
@@ -100,10 +103,10 @@ void TStorageExcel::openTable(bool ReadOnly)
             {
                 //msexcel->SetVisibleExcel();
                 msexcel->ClearWorksheet(Worksheet);
-                // Создаем "структуру" таблицы (шапку)
+                // РЎРѕР·РґР°РµРј "СЃС‚СЂСѓРєС‚СѓСЂСѓ" С‚Р°Р±Р»РёС†С‹ (С€Р°РїРєСѓ)
                 for(int i = 0; i < Fields.size(); i++)
                 {
-                    msexcel->WriteToCell(Worksheet, Fields[i]->name, 1, i+1, "@");
+                    msexcel->WriteToCell(Worksheet, Fields[i]->name, Tables[TableIndex].TitleRowIndex, i+1, "@");
                 }
             }
         }
@@ -115,10 +118,10 @@ void TStorageExcel::openTable(bool ReadOnly)
                 Workbook = msexcel->OpenDocument();
                 Worksheet = msexcel->GetSheet(Workbook, 1);
 
-                // Создаем "структуру" таблицы (шапку)
+                // РЎРѕР·РґР°РµРј "СЃС‚СЂСѓРєС‚СѓСЂСѓ" С‚Р°Р±Р»РёС†С‹ (С€Р°РїРєСѓ)
                 for(int i = 0; i < Fields.size(); i++)
                 {
-                    msexcel->WriteToCell(Worksheet, Fields[i]->name, 1, i+1, "@");
+                    msexcel->WriteToCell(Worksheet, Fields[i]->name, Tables[TableIndex].TitleRowIndex, i+1, "@");
                 }
                 msexcel->SaveDocument(Workbook, Tables[TableIndex].File);
                 //Modified = true;
@@ -130,12 +133,12 @@ void TStorageExcel::openTable(bool ReadOnly)
         }
     }
 
-    // Подсчет столбцов
+    // РџРѕРґСЃС‡РµС‚ СЃС‚РѕР»Р±С†РѕРІ
     if (ReadOnly)
     {
         int j = 1;
         String sCellValue;
-        while ( (sCellValue = msexcel->ReadCell(Worksheet, 1, j)) != "" )
+        while ( (sCellValue = msexcel->ReadCell(Worksheet, Tables[TableIndex].TitleRowIndex, j)) != "" )
         {
             TExcelField* field = this->addField();
             if ( field != NULL )
@@ -154,14 +157,25 @@ void TStorageExcel::openTable(bool ReadOnly)
 
     FieldCount = Fields.size();
 
-    // Подсчет строк
-    int i = 2;
-    String sCellValue;
-    while ( (sCellValue = msexcel->ReadCell(Worksheet, i, 1)) != "" )
+    // РџРѕРґСЃС‡РµС‚ СЃС‚СЂРѕРє
+    Tables[TableIndex].FirstDataRowIndex = Tables[TableIndex].TitleRowIndex + 1;
+    if (Tables[TableIndex].LastDataRowIndex <= 0)
     {
-        i++;
+        RecordCount = 0;
+        int FirstDataRowIndex = Tables[TableIndex].TitleRowIndex+1;
+        int i = FirstDataRowIndex;
+        String sCellValue;
+        while ( (sCellValue = msexcel->ReadCell(Worksheet, i, 1)) != "" )
+        {
+                RecordCount++;
+                i++;
+        }
+        Tables[TableIndex].LastDataRowIndex = Tables[TableIndex].FirstDataRowIndex + RecordCount-1;
     }
-    RecordCount = i - 2;
+    else
+    {
+        RecordCount = Tables[TableIndex].LastDataRowIndex-Tables[TableIndex].TitleRowIndex;
+    }
 
     Active = true;
 }
@@ -172,7 +186,7 @@ void TStorageExcel::openTable(bool ReadOnly)
 //}
 
 //---------------------------------------------------------------------------
-// Закрывает таблицу
+// Р—Р°РєСЂС‹РІР°РµС‚ С‚Р°Р±Р»РёС†Сѓ
 void TStorageExcel::closeTable()
 {
     if (msexcel != NULL)
@@ -182,9 +196,9 @@ void TStorageExcel::closeTable()
         delete msexcel;
         msexcel = NULL;
 
-        // В последующем обернуть эти переменные
-        Workbook = Unassigned;   // эквивалентно VarClear(WorkBooks)
-        Worksheet = Unassigned;   // эквивалентно VarClear(WorkBooks)
+        // Р’ РїРѕСЃР»РµРґСѓСЋС‰РµРј РѕР±РµСЂРЅСѓС‚СЊ СЌС‚Рё РїРµСЂРµРјРµРЅРЅС‹Рµ
+        Workbook = Unassigned;   // СЌРєРІРёРІР°Р»РµРЅС‚РЅРѕ VarClear(WorkBooks)
+        Worksheet = Unassigned;   // СЌРєРІРёРІР°Р»РµРЅС‚РЅРѕ VarClear(WorkBooks)
     }
     TStorage::closeTable();
 }
@@ -197,7 +211,7 @@ bool TStorageExcel::eor()
 }
 
 //---------------------------------------------------------------------------
-// Возвращает наименование активного источника/приемника данных
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ Р°РєС‚РёРІРЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР°/РїСЂРёРµРјРЅРёРєР° РґР°РЅРЅС‹С…
 AnsiString TStorageExcel::getTable()
 {
     if ( !eot() )
@@ -207,7 +221,7 @@ AnsiString TStorageExcel::getTable()
 }
 
 //---------------------------------------------------------------------------
-// Возвращает значение поля
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ
 Variant TStorageExcel::getFieldValue(TStorageField* Field)
 {
     AnsiString fieldName = LowerCase(Field->name_src);
@@ -218,7 +232,7 @@ Variant TStorageExcel::getFieldValue(TStorageField* Field)
 
     if (field != NULL)
     {
-        return msexcel->ReadCell(Worksheet, RecordIndex+2, field->index);
+        return msexcel->ReadCell(Worksheet, RecordIndex + Tables[TableIndex].FirstDataRowIndex, field->index);
     }
     else
     {
@@ -233,7 +247,7 @@ Variant TStorageExcel::getFieldValue(TStorageField* Field)
 }
 
 //---------------------------------------------------------------------------
-// Добавляет новую запись в таблицу
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ РІ С‚Р°Р±Р»РёС†Сѓ
 void TStorageExcel::append()
 {
     RecordIndex = RecordCount;
@@ -241,17 +255,17 @@ void TStorageExcel::append()
 }
 
 //---------------------------------------------------------------------------
-// Устанавливает значение активного поля
+// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р°РєС‚РёРІРЅРѕРіРѕ РїРѕР»СЏ
 void TStorageExcel::setFieldValue(Variant Value)
 {
     if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable)
     {
-        msexcel->WriteToCell(Worksheet, Value, RecordIndex+2, FieldIndex+1, ((TExcelField*)Fields[FieldIndex])->format);
+        msexcel->WriteToCell(Worksheet, Value, RecordIndex+Tables[TableIndex].FirstDataRowIndex, FieldIndex+1, ((TExcelField*)Fields[FieldIndex])->format);
     }
 }
 
 //---------------------------------------------------------------------------
-// Добавляет новое поле в список полей
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІРѕРµ РїРѕР»Рµ РІ СЃРїРёСЃРѕРє РїРѕР»РµР№
 TExcelField* TStorageExcel::addField()
 {
     TExcelField* Field = new TExcelField();
@@ -264,10 +278,10 @@ TExcelField* TStorageExcel::addField()
 }
 
 //---------------------------------------------------------------------------
-// Фиксирует изменения (сохраняет файл)
+// Р¤РёРєСЃРёСЂСѓРµС‚ РёР·РјРµРЅРµРЅРёСЏ (СЃРѕС…СЂР°РЅСЏРµС‚ С„Р°Р№Р»)
 void TStorageExcel::commit()
 {
-    //Здесь сделать 
+    //Р—РґРµСЃСЊ СЃРґРµР»Р°С‚СЊ 
     if ( ReadOnly )
     {
         throw Exception("Can't commit the storage because it is read-only.");
@@ -279,19 +293,16 @@ void TStorageExcel::commit()
 }
 
 //---------------------------------------------------------------------------
-// Копирование полей из источника
-// Используется двойная диспетчеризация
+// РљРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕР»РµР№ РёР· РёСЃС‚РѕС‡РЅРёРєР°
+// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґРІРѕР№РЅР°СЏ РґРёСЃРїРµС‚С‡РµСЂРёР·Р°С†РёСЏ
 TStorageExcel::copyFieldsFrom(TStorage* storage)
 {
     storage->copyFieldsToExcel(this);
 }
 
 //---------------------------------------------------------------------------
-// Полное копирование полей из Excel в Excel
+// РџРѕР»РЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕР»РµР№ РёР· Excel РІ Excel
 TStorageExcel::copyFieldsToExcel(TStorage* storage)
 {
     TStorage::fullCopyFields(this, storage);
 }
-
-
-

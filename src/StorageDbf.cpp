@@ -28,17 +28,17 @@ void TStorageDbase::loadFieldDefs()
 }
 
 //---------------------------------------------------------------------------
-// Копирование полей из источника
-// Используется двойная диспетчеризация
+// РљРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕР»РµР№ РёР· РёСЃС‚РѕС‡РЅРёРєР°
+// РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґРІРѕР№РЅР°СЏ РґРёСЃРїРµС‚С‡РµСЂРёР·Р°С†РёСЏ
 TStorageDbase::copyFieldsFrom(TStorage* storage)
 {
-    // В зависимости от типа storage (производного от TStorage), вызывается метод CopyFieldsToDbf
+    // Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° storage (РїСЂРѕРёР·РІРѕРґРЅРѕРіРѕ РѕС‚ TStorage), РІС‹Р·С‹РІР°РµС‚СЃСЏ РјРµС‚РѕРґ CopyFieldsToDbf
     storage->copyFieldsToDbf(this);
 }
 
 
 //---------------------------------------------------------------------------
-// Полное копирование полей из DBF в DBF
+// РџРѕР»РЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕР»РµР№ РёР· DBF РІ DBF
 TStorageDbase::copyFieldsToDbf(TStorage* storage)
 {
     TStorage::fullCopyFields(this, storage);
@@ -66,24 +66,24 @@ TStorageDbase::TStorageDbase(String fileName)
 }
 
 //---------------------------------------------------------------------------
-// Добавляет новое поле в список полей ()
-// возможно переделать на AddField(TDbaseField* Field)
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІРѕРµ РїРѕР»Рµ РІ СЃРїРёСЃРѕРє РїРѕР»РµР№ ()
+// РІРѕР·РјРѕР¶РЅРѕ РїРµСЂРµРґРµР»Р°С‚СЊ РЅР° AddField(TDbaseField* Field)
 TStorageField* TStorageDbase::addField(TStorageField* Field)
 {
     TStorageField* newField = new TDbaseField();
 
     //String test2 = (static_cast<TDbaseField*>(newField))->type;
 
-    // Необходимо? приведение типов чтобы скопировать обьект правильно
+    // РќРµРѕР±С…РѕРґРёРјРѕ? РїСЂРёРІРµРґРµРЅРёРµ С‚РёРїРѕРІ С‡С‚РѕР±С‹ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ РѕР±СЊРµРєС‚ РїСЂР°РІРёР»СЊРЅРѕ
     *(static_cast<TDbaseField*>(newField)) = *(static_cast<TDbaseField*>(Field));
 
-    this->Fields.push_back(newField);// возможно нужно приводить к  static_cast<TDbaseField*>
+    this->Fields.push_back(newField);// РІРѕР·РјРѕР¶РЅРѕ РЅСѓР¶РЅРѕ РїСЂРёРІРѕРґРёС‚СЊ Рє  static_cast<TDbaseField*>
     FieldCount++;
     return newField;
 }
 
 //---------------------------------------------------------------------------
-// Добавляет новое поле в список полей
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІРѕРµ РїРѕР»Рµ РІ СЃРїРёСЃРѕРє РїРѕР»РµР№
 TDbaseField* TStorageDbase::addField()
 {
     /*TStorageField* Field = new TDbaseField();
@@ -108,7 +108,7 @@ TDbaseField* TStorageDbase::addField()
 
 /*
 //---------------------------------------------------------------------------
-// Добавляет новое поле в список полей
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІРѕРµ РїРѕР»Рµ РІ СЃРїРёСЃРѕРє РїРѕР»РµР№
 void TStorageDbase::AddField(const TDbaseField* Field)
 {
     Fields.push_back((TStorageField*)Field);
@@ -116,7 +116,7 @@ void TStorageDbase::AddField(const TDbaseField* Field)
 }*/
 
 //---------------------------------------------------------------------------
-// Добавляет таблицу в список (имя файла, может быть задано маской)
+// Р”РѕР±Р°РІР»СЏРµС‚ С‚Р°Р±Р»РёС†Сѓ РІ СЃРїРёСЃРѕРє (РёРјСЏ С„Р°Р№Р»Р°, РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РґР°РЅРѕ РјР°СЃРєРѕР№)
 void TStorageDbase::addTable(const TDbaseTable& Table)
 {
     //TDbaseTable* Table = new TDbaseTable();
@@ -127,7 +127,7 @@ void TStorageDbase::addTable(const TDbaseTable& Table)
     if (SearchRec.Name != "") {
         AnsiString FilePath = ExtractFilePath(Table.File);
         do {
-            TDbaseTable NewTable;
+            TDbaseTable NewTable(Table);
             NewTable.File = FilePath + SearchRec.Name;
             Tables.push_back(NewTable);
             TableCount++;
@@ -144,7 +144,7 @@ void TStorageDbase::addTable(const TDbaseTable& Table)
 }
 
 //---------------------------------------------------------------------------
-// Открытие таблицы
+// РћС‚РєСЂС‹С‚РёРµ С‚Р°Р±Р»РёС†С‹
 void TStorageDbase::openTable(bool ReadOnly)
 {
     this->ReadOnly = ReadOnly;
@@ -191,7 +191,7 @@ void TStorageDbase::create()
     pTable->TableName = ExtractFileName(Tables[TableIndex].File);
     pTable->FilePathFull = ExtractFilePath(Tables[TableIndex].File);
 
-    // Создаем определение полей таблицы из параметров
+    // РЎРѕР·РґР°РµРј РѕРїСЂРµРґРµР»РµРЅРёРµ РїРѕР»РµР№ С‚Р°Р±Р»РёС†С‹ РёР· РїР°СЂР°РјРµС‚СЂРѕРІ
     TDbfFieldDefs* TempFieldDefs;
     TempFieldDefs = new TDbfFieldDefs(NULL);
 
@@ -200,7 +200,7 @@ void TStorageDbase::create()
     }
 
 
-    // Копирование полей из шаблона, если он задан
+    // РљРѕРїРёСЂРѕРІР°РЅРёРµ РїРѕР»РµР№ РёР· С€Р°Р±Р»РѕРЅР°, РµСЃР»Рё РѕРЅ Р·Р°РґР°РЅ
     if (templateStorage)
     {
         templateStorage->openTable();
@@ -261,10 +261,10 @@ void TStorageDbase::setFieldDefs(std::vector<TStorageField>)
 }
 
 //---------------------------------------------------------------------------
-// Возвращает значение поля
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ
 Variant TStorageDbase::getFieldValue(TStorageField* Field)
 {
-    // Возможно Переделать?????? Field[FieldIndex].name
+    // Р’РѕР·РјРѕР¶РЅРѕ РџРµСЂРµРґРµР»Р°С‚СЊ?????? Field[FieldIndex].name
     //if ()
     try {
         return pTable->FieldByName(Field->name_src)->Value;
@@ -274,20 +274,20 @@ Variant TStorageDbase::getFieldValue(TStorageField* Field)
 }
 
 //---------------------------------------------------------------------------
-// Устанавливает значение активного поля
+// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р°РєС‚РёРІРЅРѕРіРѕ РїРѕР»СЏ
 void TStorageDbase::setFieldValue(Variant Value)
 {
     if (Fields[FieldIndex]->active && Fields[FieldIndex]->enable) {
         if (/*!VarIsEmpty(Value) &&*/ !VarIsNull(Value) && (AnsiString)Value != "")
         //if (/*!VarIsEmpty(Value) && !VarIsNull(Value) &&*/ (AnsiString)Value != "")
-                // (AnsiString)Value != "" - Эта проверка критична,
-                // так как в DBF исключено значение NULL
+                // (AnsiString)Value != "" - Р­С‚Р° РїСЂРѕРІРµСЂРєР° РєСЂРёС‚РёС‡РЅР°,
+                // С‚Р°Рє РєР°Рє РІ DBF РёСЃРєР»СЋС‡РµРЅРѕ Р·РЅР°С‡РµРЅРёРµ NULL
             pTable->FieldByName(Fields[FieldIndex]->name)->Value = Value;
     }
 }
 
 //---------------------------------------------------------------------------
-// Фиксирует изменения
+// Р¤РёРєСЃРёСЂСѓРµС‚ РёР·РјРµРЅРµРЅРёСЏ
 void TStorageDbase::commit()
 {
     if (ReadOnly) {
@@ -307,7 +307,7 @@ void TStorageDbase::commit()
 }
 
 //---------------------------------------------------------------------------
-// Добавляет новую запись в таблицу
+// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ РІ С‚Р°Р±Р»РёС†Сѓ
 void TStorageDbase::append()
 {
     pTable->Append();
@@ -315,7 +315,7 @@ void TStorageDbase::append()
 }
 
 //---------------------------------------------------------------------------
-// Закрывает таблицу
+// Р—Р°РєСЂС‹РІР°РµС‚ С‚Р°Р±Р»РёС†Сѓ
 void TStorageDbase::closeTable()
 {
     if (pTable != NULL) {
@@ -328,21 +328,21 @@ void TStorageDbase::closeTable()
 }
 
 //---------------------------------------------------------------------------
-// Возвращает true если достигнут конец таблицы
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ true РµСЃР»Рё РґРѕСЃС‚РёРіРЅСѓС‚ РєРѕРЅРµС† С‚Р°Р±Р»РёС†С‹
 bool TStorageDbase::eor()
 {
     return pTable->Eof;
 }
 
 //---------------------------------------------------------------------------
-// Возвращает true если достигнута последняя запись
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ true РµСЃР»Рё РґРѕСЃС‚РёРіРЅСѓС‚Р° РїРѕСЃР»РµРґРЅСЏСЏ Р·Р°РїРёСЃСЊ
 //bool TStorageDbase::Eof()
 //{
 //    return FieldIndex + 1 == Fields.size();
 //}
 
 //---------------------------------------------------------------------------
-// Переходит к следующей таблице
+// РџРµСЂРµС…РѕРґРёС‚ Рє СЃР»РµРґСѓСЋС‰РµР№ С‚Р°Р±Р»РёС†Рµ
 /*void TStorageDbase::nextTable()
 {
     TStorage::nextTable();
@@ -357,7 +357,7 @@ bool TStorageDbase::eor()
 }*/
 
 //---------------------------------------------------------------------------
-// Переходит к следующей записи таблицы
+// РџРµСЂРµС…РѕРґРёС‚ Рє СЃР»РµРґСѓСЋС‰РµР№ Р·Р°РїРёСЃРё С‚Р°Р±Р»РёС†С‹
 void TStorageDbase::nextRecord()
 {
     try {
@@ -368,11 +368,10 @@ void TStorageDbase::nextRecord()
 }
 
 //---------------------------------------------------------------------------
-// Возвращает наименование активного источника/приемника данных
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ Р°РєС‚РёРІРЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР°/РїСЂРёРµРјРЅРёРєР° РґР°РЅРЅС‹С…
 AnsiString TStorageDbase::getTable()
 {
     if (!eot()) {
         return Tables[TableIndex].File;
     }
 }
-
